@@ -1,6 +1,6 @@
 __author__ = 'Piotr Dyba'
 
-from flask.ext.login import UserMixin
+from flask_login import UserMixin
 
 from sqlalchemy import Column
 from sqlalchemy.types import Integer
@@ -10,7 +10,7 @@ from sqlalchemy.types import Boolean
 from main import db
 
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     """
     User model for reviewers.
     """
@@ -32,3 +32,13 @@ class User(db.Model, UserMixin):
         Returns if user is admin.
         """
         return self.admin
+
+    def is_authenticated(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+

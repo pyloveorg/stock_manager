@@ -1,0 +1,9 @@
+{% extends "_base.html" %}
+
+{% set page_id = 'index' %}
+
+{% block content %}
+  <div class="jumbotron">
+    {{ session.username }}
+  </div>
+{% endblock %}
