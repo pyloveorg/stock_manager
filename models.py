@@ -14,7 +14,7 @@ class User(db.Model):
     """
     User model for reviewers.
     """
-    __tablename__ = 'user'
+    __tablename__ = 'users'
     id = Column(Integer, autoincrement=True, primary_key=True)
     active = Column(Boolean, default=True)
     email = Column(String(200), unique=True)
