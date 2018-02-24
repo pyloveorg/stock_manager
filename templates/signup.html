@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% set page_id = 'signup' %}
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form class="form-signin" method="POST" action="/signup">
+    {{ form.csrf_token }}
+    {{ wtf.form_field(form.username, class="form-control form-control-sm") }}
+    {{ wtf.form_field(form.email, class="form-control form-control-sm") }}
+    {{ wtf.form_field(form.password, class="form-control form-control-sm") }}
+    {% if error %}
+      <div class="alert alert-danger" role="alert">Username already exists in database</div>
+    {% elif success %}
+      <div class="alert alert-success" role="alert">User added successfully</div>
+    {% endif %}
+    <button class="btn btn-sm btn-primary" type="submit">Sign up</button>
+  </form>
+</div>
+{% endblock %}
+
+

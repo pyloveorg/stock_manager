@@ -1,4 +1,20 @@
-.xxx {
-   max-width: 65.5rem;
-   margin: auto;
+body {
+  background-color: WhiteSmoke;
 }
+
+.form-control {
+max-width: 500px;
+  padding: 5px;
+
+}
+
+.text {
+color: WhiteSmoke;
+font-size: large;
+}
+
+.container {
+  padding: 20px;
+
+}
+
