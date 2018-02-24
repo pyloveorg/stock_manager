@@ -1,77 +1,66 @@
-#!/usr/bin/env python
-# encoding: utf-8
-from main import app
-from main import db
-from main import login_manager
-from models import User
-from main import bcrypt
-from flask import request, render_template, redirect, flash, url_for
+from sqlite3 import IntegrityError
 
+from flask import render_template, redirect, url_for
+from flask_login import login_user, login_required, logout_user, current_user
+from main import app, login_manager, db
+from forms import LoginForm, SignupForm
+from models import User
+from sqlalchemy.exc import IntegrityError
+from werkzeug.security import generate_password_hash, check_password_hash
+
+baseTemplate = 'index.html'
+loginTemplate = 'login.html'
+signupTemplate = 'signup.html'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/', methods=['GET'])
 def index():
-    #import pdb; pdb.set_trace()
     return render_template('index.html')
 
-@app.route('/info', methods=['GET'])
-def info():
-    return render_template('info.html')
+@app.route('/navitem1', methods=['GET'])
+@login_required
+def navitem1():
+    return None
+
+@app.route('/navitem2', methods=['GET'])
+def navitem2():
+    return redirect(url_for('index'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-
-    email = request.form['email']
-    password = bcrypt.generate_password_hash(request.form['pwd'])
-    """new_User=User(
-        email=email,
-        password=password,
-    )
-
-    db.session.add(new_User)
-    db.session.commit()
-"""
-    #print password
-
-    registered_user=User.query.filter_by(email=email).first()
-    #for user in registered_user:
-    #    print '{}{}'.format(user.email, user.password)
-
-    if registered_user:
-        if registered_user.password == password:
-
-    #    print 'None'
-        #flash('Username or Password is invalid', 'error')
-    #    return redirect(url_for('login'))
-    #print 'ABC'
-
-    #login_user(registered_user)
-            return '<h1>'+registered_user.email+' </h1>'
-
-    print 'Non'
-
-    #flash('Logged in successfully')
-    if request.method == 'POST':
-        return redirect(url_for('login'))
-    """form = LoginForm()
+    form = LoginForm()
     if form.validate_on_submit():
-        # Login and validate the user.
-        # user should be an instance of your `User` class
-        login_user(user)
+        user = User.query.filter_by(username=form.username.data).first()
 
-        flask.flash('Logged in successfully.')
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return render_template(baseTemplate, loggingMessage='Logged in successfully as '+current_user.username)
 
-        return flask.redirect(url_for('index'))
+        return render_template(loginTemplate, form=form, error=True)
 
-    return render_template('register.html', form=form)"""
+    return render_template(loginTemplate, form=form)
 
-    #return render_template('register.html')
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = SignupForm()
+    if form.validate_on_submit():
+        try:
+            hashed_password = generate_password_hash(form.password.data, method='sha256')
+            new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+            return render_template(signupTemplate, form=form, success=True)
+        except IntegrityError as e:
+            return render_template(signupTemplate, form=form, error=e)
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    return render_template('register.html')
+    return render_template(signupTemplate, form=form)
 
-@login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return render_template(baseTemplate, loggingMessage='Logged out successfully')
