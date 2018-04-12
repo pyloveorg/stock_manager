@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% set page_id = 'login' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form class="form-signin" method="POST" action="/login">
+    {{ form.csrf_token }}
+    {{ wtf.form_field(form.username, class="form-control form-control-sm") }}
+    {{ wtf.form_field(form.password, class="form-control form-control-sm") }}
+    {% if error %}
+      <div class="alert alert-danger" role="alert">Invalid username or password</div>
+    {% endif %}
+    <button class="btn btn-sm btn-primary" type="submit">Login</button>
+  </form>
+</div>
+{% endblock %}
