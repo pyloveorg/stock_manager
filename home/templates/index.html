@@ -7,24 +7,30 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="{{url_for('static', filename='css/my_style.css')}}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <title>Stock Manager</title>
 </head>
 
 <body>
-  <div class="jumbotron" style="margin-bottom: 0px;">
-      <h1>Stock Manager</h1>
-      <p>Probably the best app in the world</p>
-  </div>
+  <!--<div class="jumbotron" style="margin-bottom: 0px;">-->
+      <!--<h1>Stock Manager</h1>-->
+      <!--<p>Probably the best home in the world</p>-->
+  <!--</div>-->
   <nav class="navbar navbar-expand-md sticky-top navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{{url_for('index')}}">#</a>
+      <a class="navbar-brand" href="{{url_for('home.index')}}">#</a>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link {% if page_id == 'navitem1' %} active {% endif %}" href="{{url_for('navitem1')}}">Nav Item 1</a>
+          <a class="nav-link {% if page_id == 'navitem1' %} active {% endif %}" href="{{url_for('home.navitem1')}}">Nav Item 1</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if page_id == 'navitem2' %} active {% endif %}" href="{{url_for('navitem2')}}">Nav Item 2</a>
+          <a class="nav-link {% if page_id == 'navitem2' %} active {% endif %}" href="{{url_for('home.navitem2')}}">Nav Item 2</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link {% if page_id == 'users' %} active {% endif %}" href="{{url_for('auth.users')}}">Users</a>
+        </li>
+
       </ul>
       <ul class="navbar-nav ml-auto">
         {% if current_user.is_authenticated %}
@@ -34,15 +40,15 @@
             <span class="caret"></span>
           </a>
           <div class="dropdown-menu" aria-labelledby="dropdown_logout">
-              <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
+              <a class="dropdown-item" href="{{url_for('auth.logout')}}">Logout</a>
           </div>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link {% if page_id == 'login' %} active {% endif %}" href="{{url_for('login')}}">Login</a>
+          <a class="nav-link {% if page_id == 'login' %} active {% endif %}" href="{{url_for('auth.login')}}">Login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if page_id == 'signup' %} active {% endif %}" href="{{url_for('signup')}}">Signup</a>
+          <a class="nav-link {% if page_id == 'signup' %} active {% endif %}" href="{{url_for('auth.signup')}}">Signup</a>
         </li>
         {% endif %}
       </ul>
@@ -57,11 +63,11 @@
 
 
   {% endblock %}
-
+ <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+-->
 </body>
 </html>
 

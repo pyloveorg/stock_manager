@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% set page_id = 'users' %}
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<div class="container">
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Address</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in user_list %}
+      <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.address }}</td>
+        <td><a href="#" class="btn btn-sm btn-secondary" role="button">Edit</a></td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+  <!--<ul class="list-group">-->
+    <!--{% for user in user_list %}-->
+    <!--<li class="list-group-item">{{ user }}</li>-->
+    <!--{% endfor %}-->
+  <!--</ul>-->
+</div>
+{% endblock %}
