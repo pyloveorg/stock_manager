@@ -36,10 +36,10 @@ def edit_profile():
     # print(str(getattr(User.query.filter(User.id == 1).data.id)))
     # user = User.query.filter_by(id=1).first()
     # print(str(user.id))
-    setattr(User.query.filter_by(id=current_user.id).one(), 'address', 'NewHampshire')
+    # setattr(User.query.filter_by(id=current_user.id).one(), 'address', 'NewHampshire')
 
 
-    db.session.commit()
+    # db.session.commit()
     # session = Session()
     # User.query(id=current_user.id).update(address='jakistamadres')
     #  # current_user.update(username='admin2')

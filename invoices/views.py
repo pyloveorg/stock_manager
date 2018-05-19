@@ -7,7 +7,7 @@ baseTemplate = 'index.html'
 
 from flask import Blueprint
 
-invoices_blueprint = Blueprint('invoices', __name__, template_folder='templates', static_folder='static')
+invoices_blueprint = Blueprint('invoices', __name__, template_folder='templates')
 
 
 @invoices_blueprint.route('/invoicing', methods=['GET','POST'])
@@ -20,15 +20,15 @@ def customer_select():
         if request.form.get('customer_id') or request.form.get('customer_name') or request.form.get('customer_id_list'):
             if request.form.get('customer_id'):
                 id = int(request.form.get('customer_id'))
-                return redirect(url_for('products_select', id=id))
+                return redirect(url_for('invoices.products_select', id=id))
             elif request.method == 'POST' and request.form.get('customer_name'):
                 name = request.form.get('customer_name')
                 selected_customer = Customers.query.filter_by(name=name).first()
                 id = int(selected_customer.id)
-                return redirect(url_for('products_select', id=id))
+                return redirect(url_for('invoices.products_select', id=id))
             elif request.method == 'POST' and request.form.get('customer_id_list'):
                 id = int(request.form.get('customer_id_list'))
-                return redirect(url_for('products_select', id=id))
+                return redirect(url_for('invoices.products_select', id=id))
             else:
                 flash('No such customer in db, try again', 'error')
                 return render_template('invoicing.html', customers=customers)
