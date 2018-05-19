@@ -35,13 +35,14 @@
       <ul class="navbar-nav ml-auto">
         {% if current_user.is_authenticated %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" data-target="dropdown_logout">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" data-target="dropdown_auth">
             {{current_user.username}}
             <span class="caret"></span>
           </a>
-          <div class="dropdown-menu" aria-labelledby="dropdown_logout">
+            <div class="dropdown-menu" aria-labelledby="dropdown_auth">
+              <a class="dropdown-item" href="{{url_for('auth.edit_profile')}}">Edit profile</a>
               <a class="dropdown-item" href="{{url_for('auth.logout')}}">Logout</a>
-          </div>
+            </div>
         </li>
         {% else %}
         <li class="nav-item">

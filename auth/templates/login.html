@@ -8,9 +8,12 @@
     {{ form.csrf_token }}
     {{ wtf.form_field(form.username, class="form-control form-control-sm") }}
     {{ wtf.form_field(form.password, class="form-control form-control-sm") }}
+    {{ form.username.label }} {{ form.username(size=20) }}<br>
+    {{ form.password.label }} {{ form.password(size=20) }}
     {% if error %}
       <div class="alert alert-danger" role="alert">Invalid username or password</div>
     {% endif %}
+
     <button class="btn btn-sm btn-primary" type="submit">Login</button>
   </form>
 </div>

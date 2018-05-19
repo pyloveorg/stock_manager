@@ -6,6 +6,8 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from os import path
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 
 app = Flask(__name__)
 app.static_path = path.join(path.abspath(__file__), 'static')
@@ -15,6 +17,7 @@ config.read('config.ini')
 app.config['SQLALCHEMY_DATABASE_URI'] = config['DB']['SQLALCHEMY_DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config['DB']['SQLALCHEMY_TRACK_MODIFICATIONS']
 app.config['SECRET_KEY'] = config['DB']['SECRET_KEY']
+
 
 Bootstrap(app)
 
@@ -30,6 +33,13 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
 
+engine = create_engine('postgresql://postgres:postgres@localhost/stock_manager', convert_unicode=True, echo=False)
+Session = sessionmaker(bind=engine)
+
+# if(db.engine):
+#     print("Tak")
+# else:
+#     print("nie")
 from auth.models import User
 @login_manager.user_loader
 def load_user(user_id):
@@ -37,3 +47,4 @@ def load_user(user_id):
 
 if __name__ == '__main__':
   app.run(debug=True)
+
