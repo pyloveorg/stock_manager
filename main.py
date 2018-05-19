@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 app = Flask(__name__)
-# app.static_path = path.join(path.abspath(__file__), 'static')
+app.static_path = path.join(path.abspath(__file__), 'static')
 
 config = configparser.ConfigParser()
 config.read('config.ini')
