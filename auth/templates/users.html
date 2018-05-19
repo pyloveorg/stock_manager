@@ -7,16 +7,19 @@
   <table class="table table-condensed">
     <thead>
       <tr>
+        <th>Id</th>
         <th>Username</th>
         <th>Address</th>
-        <th></th>
+        <th>Phone no.</th>
       </tr>
     </thead>
     <tbody>
       {% for user in user_list %}
       <tr>
+        <td>{{ user.id }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.address }}</td>
+        <td>{{ user.phone_no }}</td>
         <td><a href="#" class="btn btn-sm btn-secondary" role="button">Edit</a></td>
       </tr>
 
