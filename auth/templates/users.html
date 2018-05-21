@@ -9,6 +9,7 @@
       <tr>
         <th>Id</th>
         <th>Username</th>
+        <th>Name</th>
         <th>Address</th>
         <th>Phone no.</th>
       </tr>
@@ -18,9 +19,12 @@
       <tr>
         <td>{{ user.id }}</td>
         <td>{{ user.username }}</td>
+        <td>{{ user.name }}</td>
         <td>{{ user.address }}</td>
         <td>{{ user.phone_no }}</td>
-        <td><a href="#" class="btn btn-sm btn-secondary" role="button">Edit</a></td>
+        <td>
+          <a href="{{ url_for('auth.edit_user', user_id=user.id) }}" class="btn btn-sm btn-secondary" role="button">Edit</a>
+        </td>
       </tr>
 
       {% endfor %}
