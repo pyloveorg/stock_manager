@@ -26,7 +26,8 @@
 <!--</div>-->
 
 <div class="container">
-  <form class="form form-horizontal" method="POST" action="/signup">
+  <!--<form class="form form-horizontal" method="POST" action="/signup">-->
+  <form class="form form-horizontal" method="POST" action="{{ action }}">
     {{ form.csrf_token }}
 
     {{ render_field(form.username, placeholder=form.username.label.text, class="col-sm-5") }}
@@ -38,13 +39,13 @@
     {{ render_field(form.zip_code, placeholder=form.zip_code.label.text, class="col-sm-3") }}
     {{ render_field(form.city, placeholder=form.city.label.text, class="col-sm-5") }}
     {{ render_field(form.phone_no, placeholder=form.phone_no.label.text, class="col-sm-3") }}
-    {{ wtf.form_field(form.birth_date, class="form-control form-control-sm") }}
+    <!--{{ wtf.form_field(form.birth_date, class="form-control form-control-sm") }}-->
     {% if error %}
       <div class="alert alert-danger" role="alert">Username already exists in database</div>
     {% elif success %}
-      <div class="alert alert-success" role="alert">User added successfully</div>
+      <div class="alert alert-success" role="alert">{{ success_message }}</div>
     {% endif %}
-    <button class="btn btn-sm btn-primary" type="submit">Sign up</button>
+    <button class="btn btn-sm btn-primary" type="submit">{% if action == '/signup' %}Sign up{% else %}Confirm changes{% endif %}</button>
   </form>
 </div>
 {% endblock %}
