@@ -55,11 +55,11 @@
       </ul>
     </div>
   </nav>
-  {% if loggingMessage %}
-    <br>
-    <div class="alert alert-success" role="alert">{{ loggingMessage }}</div>
-  {% endif %}
-
+  <!--{% if loggingMessage %}-->
+    <!--<br>-->
+    <!--<div class="alert alert-success" role="alert">{{ loggingMessage }}</div>-->
+  <!--{% endif %}-->
+  {% include "_messages.html" %}
   {% block content %}
 
 
