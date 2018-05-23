@@ -28,7 +28,7 @@
                 <select class="form-control form-control-lg " placeholder="NAME" name="customer_id_list">
                     <option selected>Choose...</option>
                     {% for customer in customers %}
-                    <option value="{{customer.id}}">{{customer.name}}</option>
+                    <option value="{{customer.customers_id}}">{{customer.name}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -70,6 +70,58 @@
     </table>
 </div>
 
+<!-- table with selected products -->
+    {% if basket %}
+
+    <div class="container">
+        <table class="table table-striped">
+            <label>Selected Products</label>
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Group</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Price</th>
+                <th scope="col">Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+         {% for product in basket %}
+        <tr>
+        <td>{{product.id}}</td>
+        <td>{{product.product_name}}</td>
+        <td>{{product.product_group}}</td>
+
+         <!-- Choosing product's amount -->
+        <td>
+            {% if product.product_quantity == 0 %}
+            <form method="POST">
+                <div class="form-row">
+                <div class="form-group col-md-6">
+                  <select id="inputState" class="form-control" name="product_qty" onchange="this.form.submit()">
+                    <option selected>Choose...</option>
+                      {% for i in range(1, product.stock_quantity+1) %}
+                    <option value="{{product.product_id}} {{i}}">{{i}}</option>
+                      {% endfor %}
+                  </select>
+
+                </div>
+                </div>
+            </form>
+            {% else %}
+            {{product.product_quantity}}
+            {% endif %}
+        </td>
+        <td>{{product.product_price}}</td>
+        <td>{{product.product_amount}}</td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
 <!-- product select form -->
 <div class="container">
     <h5>Choose product by ID or name:</h5>
@@ -107,55 +159,6 @@
 </div>
 
 
-<!-- selected products -->
-    {% if basket %}
-
-    <div class="container">
-        <table class="table table-striped">
-            <label>Selected Products</label>
-            <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Group</th>
-                <th scope="col">Qty</th>
-                <th scope="col">Price</th>
-                <th scope="col">Amount</th>
-            </tr>
-            </thead>
-            <tbody>
-         {% for product in basket %}
-        <tr>
-        <td>{{product.id}}</td>
-        <td>{{product.product_name}}</td>
-        <td>{{product.product_group}}</td>
-
-         <!-- Choosing product's amount -->
-        <td>
-            <form method="POST">
-                <div class="form-row">
-                <div class="form-group col-md-6">
-                  <select id="inputState" class="form-control" name="product_qty" onchange="this.form.submit()">
-                    <option selected>Choose...</option>
-                      {% for i in range(1, product.stock_quantity+1) %}
-                    <option value="[{{product.id}}, {{i}}]">{{i}}</option>
-                      {% endfor %}
-                  </select>
-
-                </div>
-                </div>
-            </form>
-        </td>
-        <td>{{product.product_price}}</td>
-        <td>
-
-        </td>
-            </tr>
-        {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
 {% endif %}
 
 
@@ -172,6 +175,7 @@
     </form>
     </div>
 {% endif %}
+
 <!-- Modal -->
 {% if new_invoice %}
 <!-- Button trigger modal -->
@@ -235,25 +239,25 @@
             </tr>
           </thead>
           <tbody>
-          {% for item in new_invoice.invoicing %}
+          {% for item in new_invoice.quantities %}
             <tr>
-              <td>{{item.name}} / Product code: {{item.products_id}}</td>
-              <td>{{item.price}}</td>
-              <td>{{item.quantity}}</td>
-              <td>{{item.price * item.quantity}}</td>
+              <td>{{item.product.name}} / Product code: {{item.product.products_id}}</td>
+              <td>{{item.product.price}}</td>
+              <td>{{item.order_quantity}}</td>
+              <td>{{item.total_price}}</td>
             </tr>
           {% endfor %}
             <tr>
               <th class="text-right" scope="row" colspan="3">Subtotal</th>
-              <td>100 PLN</td>
+              <td>{{new_invoice.net}} PLN</td>
             </tr>
             <tr>
               <th class="text-right" scope="row" colspan="3">Tax</th>
-              <td>23 PLN</td>
+              <td>{{new_invoice.tax}} PLN</td>
             </tr>
             <tr>
               <th class="text-right" scope="row" colspan="3">Total</th>
-                <td><u>123 PLN</u></td>
+                <td><u>{{new_invoice.sum}} PLN</u></td>
             </tr>
           </tbody>
         </table>
