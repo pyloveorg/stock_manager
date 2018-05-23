@@ -45,7 +45,7 @@
     {% elif success %}
       <div class="alert alert-success" role="alert">{{ success_message }}</div>
     {% endif %}
-    <button class="btn btn-sm btn-primary" type="submit">{% if action == '/signup' %}Sign up{% else %}Confirm changes{% endif %}</button>
+    <button class="btn btn-sm btn-primary" type="submit">{% if method == 'signup' %}Sign up{% else %}Confirm changes{% endif %}</button>
   </form>
 </div>
 {% endblock %}

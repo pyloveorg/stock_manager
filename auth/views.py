@@ -105,9 +105,10 @@ def signup():
             db.session.commit()
             return render_template(signupTemplate, form=form, success=True, action="/signup", success_message='User added successfully')
         except IntegrityError as e:
-            return render_template(signupTemplate, form=form, error=e, action="/signup")
-    return render_template(signupTemplate, form=form, action="/signup")
-
+            return render_template(signupTemplate, form=form, error=e, action="{{ url_for('auth.signup') }}")
+    # return render_template(signupTemplate, form=form, action="/signup")
+    return render_template(signupTemplate, form=form, action="{{ url_for('auth.signup') }}")
+# "{{ url_for('auth.edit_user', user_id=user.id) }}"
 
 
 @auth_blueprint.route('/logout')
@@ -120,13 +121,19 @@ def logout():
 @auth_blueprint.route('/users', methods=['GET'])
 @login_required
 def users():
-    user_list = User.query.order_by(User.username).all()
+    print(current_user.admin)
 
+    if current_user.admin == True:
+        user_list = User.query.order_by(User.username).all()
+    else:
+        user_list = User.query.filter_by(id=current_user.id)
     # user_list = User.query.all()
     return render_template(usersTemplate, user_list=user_list)
 
 @auth_blueprint.route('/user/<int:user_id>', methods=['GET', 'POST'])
+@login_required
 def edit_user(user_id):
+
     user = User.query.filter_by(id=user_id).first()
     form = SignupForm()
     if request.method == 'GET':
