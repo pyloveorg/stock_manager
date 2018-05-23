@@ -18,3 +18,4 @@ python-bcrypt
 pytz
 six
 wtforms_html5
+psycopg2
