@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+{% set page_id = 'signup' %}
+{% from "_render_field.html" import render_field %}
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <form class="form form-horizontal" method="POST" action="{{ action }}">
+    {{ form.csrf_token }}
+    {{ render_field(form.username, placeholder=form.username.label.text, class="col-sm-5") }}
+    {{ render_field(form.email, placeholder=form.email.label.text, class="col-sm-5") }}
+    {% if purpose == 'signup' %}
+    {{ render_field(form.password, placeholder=form.password.label.text, class="col-sm-5") }}
+    {{ render_field(form.confirm_password, placeholder=form.confirm_password.label.text, class="col-sm-5") }}
+    {% endif %}
+    {{ render_field(form.name, placeholder=form.name.label.text, class="col-sm-5") }}
+    {{ render_field(form.address, placeholder=form.address.label.text, class="col-sm-8") }}
+    {{ render_field(form.zip_code, placeholder=form.zip_code.label.text, class="col-sm-3") }}
+    {{ render_field(form.city, placeholder=form.city.label.text, class="col-sm-5") }}
+    {{ render_field(form.phone_no, placeholder=form.phone_no.label.text, class="col-sm-3") }}
+    <button class="btn btn-sm btn-primary" type="submit">{% if purpose == 'signup' %}Sign up{% else %}Confirm changes{% endif %}</button>
+  </form>
+</div>
+{% endblock %}
+
+
