@@ -10,39 +10,6 @@ __author__ = 'Jacek Kalbarczyk'
 from main import db
 from datetime import datetime
 
-class User(db.Model):
-    """
-    User model for reviewers.
-    """
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    active = db.Column(db.Boolean, default=True)
-    username = db.Column(db.String(200), unique=True)
-    email = db.Column(db.String(200), default='')
-    password = db.Column(db.String(200), default='')
-    admin = db.Column(db.Boolean, default=False)
-
-    def is_active(self):
-        """
-        Returns if user is active.
-        """
-        return self.active
-
-    def is_admin(self):
-        """
-        Returns if user is admin.
-        """
-        return self.admin
-
-    def is_authenticated(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return str(self.id)
-
 
 class Customers(db.Model):
     __tablename__ = 'customers'
