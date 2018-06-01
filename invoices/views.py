@@ -1,8 +1,9 @@
 from flask import render_template, redirect, url_for, request, flash
 from datetime import datetime
-from invoices.models import Products, Customers, Invoices, Basket, Quantities
+from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers
 from database import db
-
+from invoices.forms import CustomerForm, SupplierForm
+from flask_login import login_required
 baseTemplate = 'index.html'
 
 from flask import Blueprint
@@ -208,3 +209,100 @@ def selected_invoice(inv_id):
     invoice = Invoices.query.get_or_404(inv_id)
     return render_template('invoice.html', invoice=invoice)
 
+@invoices_blueprint.route('/customers', methods=['GET'])
+@login_required
+def customers():
+    customer_list = Customers.query.order_by(Customers.name).all()
+    return render_template('customers.html', customer_list=customer_list)
+
+
+@invoices_blueprint.route('/suppliers', methods=['GET'])
+@login_required
+def suppliers():
+    supplier_list = Suppliers.query.order_by(Suppliers.name).all()
+    return render_template('suppliers.html', supplier_list=supplier_list)
+
+@invoices_blueprint.route('/customer/<int:customer_id>', methods=['GET', 'POST'])
+@login_required
+def edit_customer(customer_id):
+    customer = Customers.query.get_or_404(customer_id)
+    form = CustomerForm()
+    if request.method == 'GET':
+        form.name.data = customer.name
+        form.nip.data = customer.nip
+        form.address.data = customer.address
+    elif form.validate_on_submit():
+        customer.name = form.name.data
+        customer.nip = form.nip.data
+        customer.address = form.address.data
+        db.session.commit()
+        flash('Customer successfully updated', 'success')
+        return redirect(url_for('invoices.customers'))
+
+    return render_template('customer_edit.html',
+                           form=form,
+                           action=url_for('invoices.edit_customer', customer_id=customer_id),
+                           edit_mode=1)
+
+@invoices_blueprint.route('/supplier/<int:supplier_id>', methods=['GET', 'POST'])
+@login_required
+def edit_supplier(supplier_id):
+    supplier = Suppliers.query.get_or_404(supplier_id)
+    form = SupplierForm()
+    if request.method == 'GET':
+        form.name.data = supplier.name
+        form.nip.data = supplier.nip
+        form.address.data = supplier.address
+        form.discount.data = supplier.discount
+    elif form.validate_on_submit():
+        supplier.name = form.name.data
+        supplier.nip = form.nip.data
+        supplier.address = form.address.data
+        supplier.discount = form.discount.data
+        db.session.commit()
+        flash('Supplier successfully updated', 'success')
+        return redirect(url_for('invoices.suppliers'))
+
+    return render_template('supplier_edit.html',
+                           form=form,
+                           action=url_for('invoices.edit_supplier', supplier_id=supplier_id),
+                           edit_mode=1)
+
+@invoices_blueprint.route('/add_customer', methods=['GET', 'POST'])
+@login_required
+def add_customer():
+    form = CustomerForm()
+    if form.validate_on_submit():
+        customer = Customers()
+        customer.name = form.name.data
+        customer.address = form.address.data
+        customer.nip = form.nip.data
+        db.session.add(customer)
+        db.session.commit()
+        flash('Customer added successfully', 'success')
+        return redirect(url_for('invoices.customers'))
+
+    return render_template('customer_edit.html',
+                            form=form,
+                            action=url_for('invoices.add_customer'),
+                            edit_mode=0)
+
+@invoices_blueprint.route('/add_supplier', methods=['GET', 'POST'])
+@login_required
+def add_supplier():
+    form = SupplierForm()
+    if form.validate_on_submit():
+        supplier = Suppliers()
+        supplier.name = form.name.data
+        supplier.address = form.address.data
+        supplier.nip = form.nip.data
+        supplier.discount = form.discount.data
+        db.session.add(supplier)
+        db.session.commit()
+        flash('Supplier added successfully', 'success')
+        return redirect(url_for('invoices.suppliers'))
+
+    return render_template('supplier_edit.html',
+                            form=form,
+                            action=url_for('invoices.add_supplier'),
+                            edit_mode=0)

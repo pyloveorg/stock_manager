@@ -4,7 +4,14 @@
 {% block title %}Sign up{% endblock %}
 
 {% block content %}
-
+<div class="jumbotron">
+  <div class="container">
+  {% if purpose == 'signup' %}
+    <h3>Signup user</h3>
+  {% else %}
+    <h3>Edit user data</h3>
+  {% endif %}
+  </div>
 <div class="container">
   <form class="form form-horizontal" method="POST" action="{{ action }}">
     {{ form.csrf_token }}
@@ -19,8 +26,16 @@
     {{ render_field(form.zip_code, placeholder=form.zip_code.label.text, class="col-sm-3") }}
     {{ render_field(form.city, placeholder=form.city.label.text, class="col-sm-5") }}
     {{ render_field(form.phone_no, placeholder=form.phone_no.label.text, class="col-sm-3") }}
-    <button class="btn btn-sm btn-primary" type="submit">{% if purpose == 'signup' %}Sign up{% else %}Confirm changes{% endif %}</button>
+    <div class="container">
+      <button class="btn btn-md btn-primary" type="submit">Confirm</button>
+        {% if purpose == 'signup' %}
+          <a href="{{url_for('home.index')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+        {% else %}
+          <a href="{{url_for('auth.users')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+        {% endif %}
+    </div>
   </form>
+</div>
 </div>
 {% endblock %}
 

@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% set page_id = 'supplier_edit' %}
+{% from "_render_field.html" import render_field %}
+{% block title %}Add/Edit supplier{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <div class="container">
+  {% if edit_mode == 1 %}
+    <h3>Edit supplier data</h3>
+  {% else %}
+    <h3>Add new supplier</h3>
+  {% endif %}
+  </div>
+<div class="container">
+  <form class="form form-horizontal" method="POST" action="{{ action }}">
+    {{ form.csrf_token }}
+    {{ render_field(form.name, placeholder=form.name.label.text, class="col-sm-5") }}
+    {{ render_field(form.nip, placeholder=form.nip.label.text, class="col-sm-5") }}
+    {{ render_field(form.address, placeholder=form.address.label.text, class="col-sm-8") }}
+    {{ render_field(form.discount, placeholder=form.discount.label.text, class="col-sm-3") }}
+    <div class="container">
+      <button class="btn btn-md btn-primary" type="submit">Confirm</button>
+      <a href="{{url_for('invoices.suppliers')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+    </div>
+  </form>
+</div>
+</div>
+{% endblock %}
+
+
