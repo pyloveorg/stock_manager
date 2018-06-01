@@ -36,7 +36,9 @@ def login():
                 flash('Logged in successfully as {}'.format(current_user.username), 'success')
                 return render_template(baseTemplate)
 
-        return render_template(loginTemplate, form=form, error=True)
+        flash('Invalid username or password', 'danger')
+        # return render_template(loginTemplate, form=form, error=True)
+        return render_template(loginTemplate, form=form)
 
     return render_template(loginTemplate, form=form)
 
