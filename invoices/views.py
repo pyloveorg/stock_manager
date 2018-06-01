@@ -10,7 +10,7 @@ from flask import Blueprint
 invoices_blueprint = Blueprint('invoices', __name__, template_folder='templates')
 
 
-@invoices_blueprint.route('/invoicing', methods=['GET','POST'])
+@invoices_blueprint.route('/invoicing', methods=['GET', 'POST'])
 #@login_required
 def customer_select():
     customers = Customers.query.all()
@@ -32,7 +32,7 @@ def customer_select():
             else:
                 flash('No such customer in db, try again', 'error')
                 return render_template('invoicing.html', customers=customers)
-    return render_template('invoicing.html',customers=customers)
+    return render_template('invoicing.html', customers=customers)
 
 
 @invoices_blueprint.route('/invoicing/customer/<int:id>', methods=['GET','POST'])

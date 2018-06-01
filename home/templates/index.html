@@ -28,6 +28,9 @@
           <a class="nav-link {% if page_id == 'navitem2' %} active {% endif %}" href="{{url_for('home.navitem2')}}">Nav Item 2</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link {% if page_id == 'stock' %} active {% endif %}" href="{{url_for('stock.stock_view')}}">Stock</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link {% if page_id == 'users' %} active {% endif %}" href="{{url_for('auth.users')}}">Users</a>
         </li>
 

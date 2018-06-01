@@ -7,7 +7,7 @@ __author__ = 'Jacek Kalbarczyk'
 #from sqlalchemy.types import String
 #from sqlalchemy.types import Boolean
 
-from main import db
+from database import db
 from datetime import datetime
 
 
@@ -20,6 +20,7 @@ class Customers(db.Model):
     payment = db.Column(db.Integer, default=0)
     invoices = db.relationship('Invoices', backref='customer', lazy=True)
 
+
 class Suppliers(db.Model):
     __tablename__ = 'suppliers'
     suppliers_id = db.Column(db.Integer, primary_key=True)
@@ -29,6 +30,7 @@ class Suppliers(db.Model):
     discount = db.Column(db.Float, default=0)
     orders = db.relationship('Orders', backref='supplier', lazy=True)
     products = db.relationship('Products', backref='supplier', lazy=True)
+
 
 class Basket(db.Model):
     __tablename__ = 'basket'
@@ -52,6 +54,7 @@ sup_orders = db.Table('sup_orders',
                   db.Column('orders_id', db.Integer, db.ForeignKey('orders.orders_id'))
                   )
 
+
 class Products(db.Model):
     __tablename__ = 'products'
     products_id = db.Column(db.Integer, primary_key=True)
@@ -67,6 +70,7 @@ class Products(db.Model):
     # def __repr__(self):
     #     return "Products(products_id={}, name='{}', group='{}', quantity='{}', price='{}'".format(self.products_id, self.name, self.group, self.quantity, self.price)
 
+
 class Invoices(db.Model):
     __tablename__ = 'invoices'
     invoices_id = db.Column(db.Integer, primary_key=True)
@@ -78,6 +82,7 @@ class Invoices(db.Model):
     payment_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     quantities = db.relationship('Quantities', backref='invoice', lazy=True)
 
+
 class Orders(db.Model):
     __tablename__ = 'orders'
     orders_id = db.Column(db.Integer, primary_key=True)
@@ -87,6 +92,7 @@ class Orders(db.Model):
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     quantities = db.relationship('Quantities', backref='order', lazy=True)
     sent = db.Column(db.Boolean, default=False)
+
 
 class Quantities(db.Model):
     __tablename__ = 'quantities'
