@@ -10,6 +10,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy_utils import database_exists, create_database
 from werkzeug.security import generate_password_hash
 import sqlalchemy as sa
+from sqlalchemy.orm.mapper import configure_mappers
 
 def db_start():
     app.app_context().push()
@@ -30,6 +31,8 @@ def db_start():
     user.admin = True
     user.poweruser = True
     try:
+        sa.orm.configure_mappers()
+        app.app_context().push()
         db.session.add(user)
         db.session.commit()
     except IntegrityError as e:
