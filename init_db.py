@@ -46,7 +46,7 @@ def add_supp():
     discount = db.Column(db.Float, default=0)
     """
     supplier1 = Suppliers(
-        name='Engine Company',
+        name='Engine Company 2',
         nip='35223425525',
         adress="Engine town",
         discount=10.15

@@ -2,7 +2,6 @@ from sqlite3 import IntegrityError
 
 from flask import render_template, redirect, url_for, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
-# from main import login_manager
 # from forms import LoginForm, SignupForm
 from invoices.models import Products, Suppliers
 from database import db
@@ -14,33 +13,33 @@ from sqlalchemy.sql import text
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy import select, cast
 from sqlalchemy_searchable import search
-
+from stock.search_engine import search_engine
 
 productsTemplate = 'products.html'
 stock_blueprint = Blueprint("stock", __name__, template_folder='templates')
 
 
-def search_engine(query):
-    product_list = {"Products":[]}
-    if query:
-        search_results = Products.query.order_by(Products.products_id)
-        search_results = search(search_results, query)
-
-    else:
-        search_results = Products.query.order_by(Products.products_id)
-
-    for r in search_results:
-        product_name = str(r)
-        product_list["Products"].append({"name": product_name[1:-1], "columns": [
-            r.products_id,
-            r.name,
-            r.group,
-            r.stock_quantity,
-            r.price,
-            r.supplier_id
-        ]})
-
-    return product_list
+# def search_engine(query):
+#     product_list = {"Products":[]}
+#     if query:
+#         search_results = Products.query.order_by(Products.products_id)
+#         search_results = search(search_results, query)
+#
+#     else:
+#         search_results = Products.query.order_by(Products.products_id)
+#
+#     for r in search_results:
+#         product_name = str(r)
+#         product_list["Products"].append({"name": product_name[1:-1], "columns": [
+#             r.products_id,
+#             r.name,
+#             r.group,
+#             r.stock_quantity,
+#             r.price,
+#             r.supplier_id
+#         ]})
+#
+#     return product_list
 
 
 def columns_tr(model):
