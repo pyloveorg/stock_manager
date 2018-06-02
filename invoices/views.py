@@ -15,7 +15,7 @@ from flask import Blueprint
 invoices_blueprint = Blueprint('invoices', __name__, template_folder='templates')
 
 
-@invoices_blueprint.route('/invoicing', methods=['GET','POST'])
+@invoices_blueprint.route('/invoicing', methods=['GET', 'POST'])
 #@login_required
 def customer_select():
     customers = Customers.query.all()

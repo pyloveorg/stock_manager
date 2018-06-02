@@ -1,0 +1,123 @@
+{% extends "index.html" %}
+{% set page_id = 'products' %}
+{% block title %}Products{%endblock%}
+
+{% block content %}
+<div id="stock" class=""container-fluid"">
+    <div class="header">
+        Maybe something useful will come to mind.
+
+    </div>
+    <div class="row">
+        <div class="col-sm-1">
+
+        </div>
+        <div class="col-sm-1 ">
+            <div class="row">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newModal">
+                      Add Product to stock
+                </button>
+                <div class="modal fade" id="newModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="container-fluid">
+                                <div class="modal-header">
+                                    <h4>Add new product</h4>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <form action="/stock/add" method="post">
+                                            <div class="form-group">
+                                                Product Name: <input type="text" name="product_name" required>
+                                                Product Group: <input type="text" name="product_group" required>
+                                                Product Quantity: <input type="number" name="product_quantity" required>
+                                                Product Price: <input type="number" name="product_price" required>
+                                                Supplier:
+                                                    <select class="form-control" id="sel1" name="supplier_id">
+                                                        {% if suppliers %}
+                                                            {% for supplier in suppliers %}
+                                                                <option>{{ supplier.suppliers_id }}</option>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </select>
+                                            </div>
+                                            <input class="btn btn-primary" type="submit" value="Submit">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-4 ml-auto">.col-md-4 .ml-auto</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                another test
+            </div>
+        </div>
+        <div class="col-sm-7" id="stock_display">
+
+            <table class="table table-hover" id="stock_table">
+
+            </table>
+
+        </div>
+        <div class="col-sm-2">
+            <form action="/search" method="post">
+                <div class="row">
+                    <div class="col-md-auto">
+                        <input type="text" class="form-control" placeholder="Search" name="query">
+                        <small id="searchHelp" class="form-text text-muted"></small>
+                            <div class="row_button">
+                                <input class="btn btn-primary" type="submit" value="Submit">
+                            </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+
+    </div>
+
+
+</div>
+
+<script>
+
+
+var stock = {{ searched_products|tojson }};
+var columnThead = {{ products_columns|tojson }}
+document.getElementById('stock_table').innerHTML = newTable(stock, columnThead);
+document.getElementById('searchHelp').innerHTML = "Products found: " + searchLen(stock);
+
+function searchLen(list) {
+    var listLen = list.Products.length;
+    return listLen;
+}
+
+function newTable(list1, list2) {
+    var tableCreate = '<table>';
+    tableCreate += '<tr>';
+    tableCreate += '<thead>';
+    for (var th in list2.Columns){
+        tableCreate += '<th>' + list2.Columns[th] + '</th>';
+    }
+    tableCreate += '</tr>';
+    tableCreate += '</thead>';
+    for (var x in list1.Products){
+        tableCreate += '<tr>';
+        for (var y in list1.Products[x].columns){
+            tableCreate += '<td>' + list1.Products[x].columns[y] + '</td>';
+        }
+        tableCreate += '</tr>';
+
+    }
+    tableCreate += '</table>';
+    return tableCreate;
+}
+
+</script>
+
+{% endblock %}
