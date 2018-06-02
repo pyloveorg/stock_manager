@@ -19,7 +19,7 @@ class Customers(db.Model):
     customers_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     nip = db.Column(db.String(30), nullable=False)
-    adress = db.Column(db.String(80), nullable=False)
+    address = db.Column(db.String(80), nullable=False)
     payment = db.Column(db.Integer, default=0)
     invoices = db.relationship('Invoices', backref='customer', lazy=True)
 
@@ -29,7 +29,7 @@ class Suppliers(db.Model):
     suppliers_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     nip = db.Column(db.String(30), nullable=False)
-    adress = db.Column(db.String(80), nullable=False)
+    address = db.Column(db.String(80), nullable=False)
     discount = db.Column(db.Float, default=0)
     orders = db.relationship('Orders', backref='supplier', lazy=True)
     products = db.relationship('Products', backref='supplier', lazy=True)

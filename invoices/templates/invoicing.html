@@ -105,9 +105,10 @@
                     <option value="{{product.product_id}} {{i}}">{{i}}</option>
                       {% endfor %}
                   </select>
+                <div class="invalid-feedback">Example invalid custom select feedback</div>
+                </div>
+                </div>
 
-                </div>
-                </div>
             </form>
             {% else %}
             {{product.product_quantity}}
@@ -117,6 +118,20 @@
         <td>{{product.product_amount}}</td>
             </tr>
         {% endfor %}
+
+         <!-- Make invoice button -->
+            <tr>
+                {% if basket %}
+                <td colspan="4"></td>
+                <td colspan="2">
+                    <div class="text-md-right">
+                    <form method="POST">
+                        <input type="submit" name="make_invoice" value="Make Invoice" class="btn btn-primary btn-lg">
+                    </form>
+                    </div>
+                </td>
+                {% endif %}
+            </tr>
             </tbody>
         </table>
     </div>
@@ -159,118 +174,5 @@
 </div>
 
 
-{% endif %}
-
-
-<!-- Making invoice and cleaning basket button -->
-{% if basket %}
-
-<div class="container">
-    <form method="POST">
-        <div class="form-group row">
-            <div class="col-sm-10">
-                <input type="submit" name="make_invoice" value="Make Invoice" class="btn btn-primary btn-lg btn-block">
-            </div>
-        </div>
-    </form>
-    </div>
-{% endif %}
-
-<!-- Modal -->
-{% if new_invoice %}
-<!-- Button trigger modal -->
-<div class="container">
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#exampleModalLong">
-              Show Invoice
-            </button>
-        </div>
-        </div>
-</div>
-<div class="modal fade bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Invoice</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-4">Stock Manager Sp. z o.o.<br>gen. Tadeusza Kutrzeby 10<br>61-719 Poznań<br>NIP: 123-456-00-00</div>
-      <div class="col-md-4 ml-auto">Poznań, {{new_invoice.date.date()}}</div>
-    </div>
-      <div class="row">
-          <div class="col">
-              <br> <!--Pusty wiersz -->
-          </div>
-      </div>
-    <div class="row">
-      <div class="col-md-3 ml-auto"><b>Invoice</b><br>{{new_invoice.invoices_id}}/{{new_invoice.date.year}}</div>
-      <div class="col-md-3 ml-auto">{{new_invoice.customer.name}}<br>{{new_invoice.customer.adress}}<br>{{new_invoice.customer.nip}}<br>ID: {{new_invoice.customer.customers_id}}</div>
-    </div>
-      <div class="row">
-          <div class="col">
-              <br> <!--Pusty wiersz -->
-          </div>
-      </div>
-    <div class="row">
-      <div class="col-md-6 ml-auto">Payment day: {{payment_day.date()}}<br>Account no 111222333444555</div>
-    </div>
-      <div class="row">
-          <div class="col">
-              <br> <!--Pusty wiersz -->
-          </div>
-      </div>
-
-      <!--Table with items in modal -->
-    <div class="row">
-      <div class="col-sm-12">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Description</th>
-              <th scope="col">Unit Cost</th>
-              <th scope="col">Qty</th>
-              <th scope="col">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for item in new_invoice.quantities %}
-            <tr>
-              <td>{{item.product.name}} / Product code: {{item.product.products_id}}</td>
-              <td>{{item.product.price}}</td>
-              <td>{{item.order_quantity}}</td>
-              <td>{{item.total_price}}</td>
-            </tr>
-          {% endfor %}
-            <tr>
-              <th class="text-right" scope="row" colspan="3">Subtotal</th>
-              <td>{{new_invoice.net}} PLN</td>
-            </tr>
-            <tr>
-              <th class="text-right" scope="row" colspan="3">Tax</th>
-              <td>{{new_invoice.tax}} PLN</td>
-            </tr>
-            <tr>
-              <th class="text-right" scope="row" colspan="3">Total</th>
-                <td><u>{{new_invoice.sum}} PLN</u></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 {% endif %}
 {% endblock %}

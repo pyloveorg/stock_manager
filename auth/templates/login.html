@@ -4,17 +4,24 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<div class="jumbotron">
+  <div class="container">
+    <h4>Login user</h4>
+  </div>
 <div class="container">
   <form class="form-signin" method="POST" action="/login">
     {{ form.csrf_token }}
     {{ render_field(form.username, placeholder=form.username.label.text, class="col-sm-5") }}
     {{ render_field(form.password, placeholder=form.password.label.text, class="col-sm-5") }}
 
-    {% if error %}
-      <div class="alert alert-danger" role="alert">Invalid username or password</div>
-    {% endif %}
-
-    <button class="btn btn-sm btn-primary" type="submit">Login</button>
+    <!--{% if error %}-->
+      <!--<div class="alert alert-danger" role="alert">Invalid username or password</div>-->
+    <!--{% endif %}-->
+    <div class="container">
+      <button class="btn btn-md btn-primary" type="submit">Login</button>
+      <a href="{{url_for('home.index')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+    </div>
   </form>
+</div>
 </div>
 {% endblock %}
