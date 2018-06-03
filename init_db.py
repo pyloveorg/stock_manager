@@ -34,6 +34,7 @@ def init_admin():
     try:
         sa.orm.configure_mappers()
         app.app_context().push()
+        db.create_all()
         db.session.add(user)
         db.session.commit()
     except IntegrityError as e:
