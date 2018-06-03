@@ -8,7 +8,10 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="{{url_for('static', filename='css/my_style.css')}}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!--<script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>-->
+  <!--<script type="text/javascript" src="Scripts/bootstrap.min.js"></script>-->
   <title>Stock Manager</title>
 </head>
 
@@ -27,11 +30,11 @@
           <!--<a class="nav-link {% if page_id == 'invoicing' %} active {% endif %}" href="{{url_for('invoices.customer_select')}}">Invoices</a>-->
         <!--</li>-->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" data-target="dropdown_auth">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" data-target="dropdown_invoices">
             Invocing
             <span class="caret"></span>
           </a>
-            <div class="dropdown-menu" aria-labelledby="dropdown_auth">
+            <div class="dropdown-menu" aria-labelledby="dropdown_invoices">
               <a class="dropdown-item" href="{{url_for('invoices.customer_select')}}">Invoices</a>
               <a class="dropdown-item" href="{{url_for('invoices.customers')}}">Customers</a>
               <a class="dropdown-item" href="{{url_for('invoices.suppliers')}}">Suppliers</a>
@@ -40,8 +43,19 @@
         <li class="nav-item">
           <a class="nav-link {% if page_id == 'navitem2' %} active {% endif %}" href="{{url_for('home.navitem2')}}">Nav Item 2</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link {% if page_id == 'users' %} active {% endif %}" href="{{url_for('auth.users')}}">Users</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" data-target="dropdown_userpanel">
+            User panel
+            <span class="caret"></span>
+          </a>
+            <div class="dropdown-menu" aria-labelledby="dropdown_userpanel">
+              <a class="dropdown-item" href="{{url_for('auth.user_workplan', user_id=0, month=0,year=0)}}">Workplan</a>
+              <a class="dropdown-item" href="{{url_for('auth.leave_applications')}}">Leave applications</a>
+              {% if current_user.admin %}
+              <a class="dropdown-item" href="{{url_for('auth.users')}}">Users</a>
+              {% endif %}
+
+            </div>
         </li>
 
       </ul>

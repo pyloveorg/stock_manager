@@ -23,3 +23,4 @@ def navitem2():
     return redirect(url_for('home.index'))
 
 
+

@@ -4,24 +4,23 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-  <div class="container">
-    <h4>Login user</h4>
-  </div>
-<div class="container">
-  <form class="form-signin" method="POST" action="/login">
-    {{ form.csrf_token }}
-    {{ render_field(form.username, placeholder=form.username.label.text, class="col-sm-5") }}
-    {{ render_field(form.password, placeholder=form.password.label.text, class="col-sm-5") }}
+<div class="container container-fluid">
+    <div class="card">
+      <div class="card-header bg-secondary text-white">
+        <strong>Login user</strong><br>
+      </div>
+      <div class="card-body">
 
-    <!--{% if error %}-->
-      <!--<div class="alert alert-danger" role="alert">Invalid username or password</div>-->
-    <!--{% endif %}-->
-    <div class="container">
-      <button class="btn btn-md btn-primary" type="submit">Login</button>
-      <a href="{{url_for('home.index')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+        <form class="form-signin" method="POST" action="/login">
+          {{ form.csrf_token }}
+          {{ render_field(form.username, placeholder=form.username.label.text, class="col-sm-5") }}
+          {{ render_field(form.password, placeholder=form.password.label.text, class="col-sm-5") }}
+          <div class="container">
+            <button class="btn btn-md btn-primary" type="submit">Login</button>
+            <a href="{{url_for('home.index')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
-</div>
 </div>
 {% endblock %}
