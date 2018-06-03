@@ -9,6 +9,8 @@ from os import path
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
+from sqlalchemy.orm.mapper import configure_mappers
+import sqlalchemy as sa
 
 
 def init_admin():
@@ -44,6 +46,7 @@ with app.test_request_context():
         create_database(config['DB']['SQLALCHEMY_DATABASE_URI'])
     from auth.models import User
     from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
+    sa.orm.configure_mappers()
     db.create_all()
     db.session.commit()
     if not User.query.filter_by(username='admin').first():
