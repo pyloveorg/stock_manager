@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+{% set page_id = 'users' %}
+{% block title %}Users{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <a href="{{ url_for('auth.new_leave_application', user_id=current_user.id) }}" class="btn btn-md btn-primary" role="button">New leave application</a>
+</div>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header bg-secondary text-white">
+      <strong>Leave applications</strong>
+    </div>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Employee name</th>
+          <th>No. of days</th>
+          <th>Dates</th>
+          <th>Status</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in application_list %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ item.employee_name }}</td>
+          <td>{{ item.no_of_days }}</td>
+          <td>{{ item.dates }}</td>
+          <td>{{ item.status }}</td>
+          <td>
+            {% if current_user.admin %}
+            <form action="{{ url_for('auth.edit_leave_application_status', leave_application_id=item.id, leavestatus=1) }}" method="post">
+                <button type="submit" class="btn btn-sm btn-primary">Accept</button>
+            </form>
+            {% endif %}
+          </td>
+          <td>
+            {% if current_user.admin %}
+            <form action="{{ url_for('auth.edit_leave_application_status', leave_application_id=item.id, leavestatus=0) }}" method="post">
+                <button type="submit" class="btn btn-sm btn-primary">Reject</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

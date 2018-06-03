@@ -33,16 +33,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config['DB']['SQLALCHEMY_DATABASE_URI']
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'SQLALCHEMY_DATABASE_URI'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config['DB']['SQLALCHEMY_TRACK_MODIFICATIONS']
 app.config['SECRET_KEY'] = config['DB']['SECRET_KEY']
-app.config['WHOOSH_BASE'] = 'whoosh'
+# app.config['WHOOSH_BASE'] = 'whoosh'
 
 Bootstrap(app)
 
 db.init_app(app)
 
+
 with app.test_request_context():
     if not database_exists(config['DB']['SQLALCHEMY_DATABASE_URI']):
         create_database(config['DB']['SQLALCHEMY_DATABASE_URI'])
-    from auth.models import User
+    from auth.models import User, WorkingTimeRecord, LeaveApplication
     from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
     db.create_all()
     db.session.commit()

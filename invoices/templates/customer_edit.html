@@ -4,26 +4,28 @@
 {% block title %}Add/Edit customer{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-  <div class="container">
-  {% if edit_mode == 1 %}
-    <h3>Edit customer data</h3>
-  {% else %}
-    <h3>Add new customer</h3>
-  {% endif %}
-  </div>
-<div class="container">
-  <form class="form form-horizontal" method="POST" action="{{ action }}">
-    {{ form.csrf_token }}
-    {{ render_field(form.name, placeholder=form.name.label.text, class="col-sm-5") }}
-    {{ render_field(form.nip, placeholder=form.nip.label.text, class="col-sm-5") }}
-    {{ render_field(form.address, placeholder=form.address.label.text, class="col-sm-8") }}
-    <div class="container">
-      <button class="btn btn-md btn-primary" type="submit">Confirm</button>
-      <a href="{{url_for('invoices.customers')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+<div class="container container-fluid">
+    <div class="card">
+      <div class="card-header bg-secondary text-white">
+        {% if edit_mode == 1 %}
+          <strong>Edit customer data</strong>
+        {% else %}
+          <strong>Add new customer</strong>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <form class="form form-horizontal" method="POST" action="{{ action }}">
+          {{ form.csrf_token }}
+          {{ render_field(form.name, placeholder=form.name.label.text, class="col-sm-5") }}
+          {{ render_field(form.nip, placeholder=form.nip.label.text, class="col-sm-5") }}
+          {{ render_field(form.address, placeholder=form.address.label.text, class="col-sm-8") }}
+          <div class="container">
+            <button class="btn btn-md btn-primary" type="submit">Confirm</button>
+            <a href="{{url_for('invoices.customers')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
-</div>
 </div>
 {% endblock %}
 
