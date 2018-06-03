@@ -17,7 +17,7 @@ Pyphen==0.9.4
 SQLAlchemy==1.2.8
 SQLAlchemy-Searchable==1.0.3
 SQLAlchemy-Utils==0.33.3
-WTForms==2.1	2.2
+WTForms==2.1
 WeasyPrint==0.42.3
 Werkzeug==0.14.1
 alembic==0.9.9
