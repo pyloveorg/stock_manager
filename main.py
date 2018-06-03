@@ -41,16 +41,16 @@ Bootstrap(app)
 
 db.init_app(app)
 
-# with app.test_request_context():
-#     if not database_exists(config['DB']['SQLALCHEMY_DATABASE_URI']):
-#         create_database(config['DB']['SQLALCHEMY_DATABASE_URI'])
-#     from auth.models import User
-#     from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
-#     sa.orm.configure_mappers()
-#     db.create_all()
-#     db.session.commit()
-#     if not User.query.filter_by(username='admin').first():
-#         init_admin()
+with app.test_request_context():
+    if not database_exists(config['DB']['SQLALCHEMY_DATABASE_URI']):
+        create_database(config['DB']['SQLALCHEMY_DATABASE_URI'])
+    from auth.models import User
+    from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
+    sa.orm.configure_mappers()
+    db.create_all()
+    db.session.commit()
+    if not User.query.filter_by(username='admin').first():
+        init_admin()
 
 
 from home.views import home_blueprint
