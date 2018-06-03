@@ -1,0 +1,91 @@
+{% extends "index.html" %}
+{% set page_id = 'workplan' %}
+{% block title %}User workplan{% endblock %}
+
+{% block content %}
+<div class="container container-fluid">
+  <div class="btn-group">
+      <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-target="dropdown_year">
+          {{ userWorkplan.year }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdown_year">
+          {% for year in range(userWorkplan.year-1,userWorkplan.year+5) %}
+          <a class="dropdown-item" href="{{url_for('auth.user_workplan', user_id=userWorkplan.user_id, month=userWorkplan.month, year=year)}}">{{ year }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-target="dropdown_month">
+          {{ userWorkplan.month_name }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdown_month">
+          {% for month in monthlist %}
+            <a class="dropdown-item" href="{{ url_for('auth.user_workplan', user_id=userWorkplan.user_id, month=month[0], year=userWorkplan.year) }}">{{ month[1] }}</a>
+
+          {% endfor %}
+        </div>
+      </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-secondary text-white">
+      <strong>{{ userWorkplan.name }} - Workplan</strong>
+    </div>
+    <div class="card-body">
+
+  <table class="table table-condensed ">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Weekday</th>
+        <th>From</th>
+        <th>To</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for day in userWorkplan.list_of_days %}
+      <tr class= {{ day.color }}>
+        <td>{{ day.date }}</td>
+        <td>{{ day.weekday }}</td>
+        <td>
+            {% if day.leave == True %}
+            Leave
+            {% elif day.start_hour != -1 %}
+            {{ day.start_hour }}:00
+            {% else %}
+            -----
+            {% endif %}
+        </td>
+        <td>
+            {% if day.leave == True %}
+            Leave
+            {% elif day.stop_hour != -1 %}
+            {{ day.stop_hour }}:00
+            {% else %}
+            -----
+            {% endif %}
+        </td>
+        <td>
+            {% if current_user.admin %}
+            <a href="{{ url_for('auth.edit_workplan', user_id=userWorkplan.user_id, day=day.date.day, month=day.date.month, year=day.date.year) }}" class="btn btn-sm btn-primary" role="button">Edit</a>
+            {% endif %}
+        </td>
+        <td>
+            {% if current_user.admin %}
+            <form action="{{ url_for('auth.clear_workplan', user_id=userWorkplan.user_id, day=day.date.day, month=day.date.month, year=day.date.year) }}" method="post">
+                <button type="submit" class="btn btn-sm btn-primary">Clear</button>
+            </form>
+            {% endif %}
+        </td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+      </div>
+</div>
+</div>
+{% endblock %}

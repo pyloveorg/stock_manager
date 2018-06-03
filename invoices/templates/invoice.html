@@ -1,32 +1,113 @@
 {% extends 'index.html' %}
 {% set page_id = 'invoice' %}
 {% block body %}
-
-<!-- Card with basic invoice info -->
-
-<div class="card text-center">
-  <div class="card-header">
-    Invoice no {{invoice.invoices_id}} from {{invoice.date.date()}}
+<!-- nav breadcrumb -->
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{url_for('invoices.invoices_archive')}}">All invoices</a></li>
+    <li class="breadcrumb-item"><a href="{{url_for('invoices.invoices_by_customer')}}">By customer</a></li>
+    <li class="breadcrumb-item"><a href="{{url_for('invoices.invoices_by_product')}}">By product</a></li>
+  </ol>
+</nav>
+{% if not new_orders %}
+<!-- Card with basic invoice info if is nothing to order-->
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-auto">
+      <div class="card text-center">
+        <div class="card-header">
+          Invoice no {{invoice.invoices_id}} from {{invoice.date.date()}}
+        </div>
+          <div class="card-body">
+            <h5 class="card-title">Customer: {{invoice.customer.name}} (ID:{{invoice.customer.customers_id}})</h5>
+            <p class="card-text">Products at invoice:<br>
+            {%for item in invoice.invoicing %}
+                {{item.name}} ID: {{item.products_id}} <br>
+            {% endfor %}
+            </p>
+              <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalLong">
+                      Show Invoice
+            </button>
+          </div>
+          <div class="card-footer text-muted">
+            Payment to: {{invoice.payment_date.date()}}
+          </div>
+      </div>
+    </div>
   </div>
-  <div class="card-body">
-    <h5 class="card-title">Customer: {{invoice.customer.name}} (ID:{{invoice.customer.customers_id}})</h5>
-    <p class="card-text">Products at invoice:<br>
-    {%for item in invoice.invoicing %}
-        {{item.name}} ID: {{item.products_id}} <br>
+</div>
+{% endif %}
+<!-- if we have to order products -->
+{% if new_orders %}
+<!-- card with basic invoice info -->
+<div class="container">
+  <div class="card-deck">
+    <div class="col-sm-4">
+      <div class="card text-center">
+        <div class="card-header">
+          Invoice no {{invoice.invoices_id}} from {{invoice.date.date()}}
+        </div>
+          <div class="card-body">
+            <h5 class="card-title">Customer: {{invoice.customer.name}} (ID:{{invoice.customer.customers_id}})</h5>
+            <p class="card-text">Products at invoice:<br>
+            {%for item in invoice.invoicing %}
+                {{item.name}} ID: {{item.products_id}} <br>
+            {% endfor %}
+            </p>
+              <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalLong">
+                      Show Invoice
+            </button>
+          </div>
+          <div class="card-footer text-muted">
+            Payment to: {{invoice.payment_date.date()}}
+          </div>
+      </div>
+    </div>
+
+<!-- Card with basic automatic orders info -->
+{% for order in new_orders %}
+
+    <div class="col-sm-4">
+      <div class="card text-center border-danger mb-3">
+        <div class="card-header">
+          Order no {{order.orders_id}} from {{order.date.date()}}
+        </div>
+          <div class="card-body text-danger">
+            <h5 class="card-title">Supplier: {{order.supplier.name}} (ID:{{order.supplier.suppliers_id}})</h5>
+            <p class="card-text">Products at order:<br>
+            {%for item in order.ordering %}
+                {{item.name}} ID: {{item.products_id}} <br>
+            {% endfor %}
+            </p>
+              <!-- Buttons to show or send order  -->
+            <div class="row justify-content-md-center">
+              <div class="col-sm-3">
+              <form method="POST">
+              <input type="hidden" name="select" value="{{order.orders_id}}" />
+              <button type="submit" class="btn btn-outline-danger">Select</button>
+              </form>
+            </div>
+            <div class="col-sm-3">
+            <form method="POST">
+              <input type="hidden" name="send" value="{{order.orders_id}}" />
+            <button type="submit" class="btn btn-outline-danger">Send</button>
+            </form>
+          </div>
+          </div>
+          <div class="card-footer text-muted">
+            You are running out of this parts
+          </div>
+      </div>
+    </div>
+    </div>
     {% endfor %}
-    </p>
-      <!-- Button trigger modal -->
-    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalLong">
-              Show Invoice
-    </button>
-  </div>
-  <div class="card-footer text-muted">
-    Payment to: {{invoice.payment_date.date()}}
   </div>
 </div>
 
-
-<!-- Modal -->
+ {% endif %}
+<!-- Invoice modal -->
 
 <div class="modal fade bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -107,7 +188,9 @@
 </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <form method="POST">
+        <input type="submit" class="btn btn-primary" name="Print" value="Print">
+        </form>
       </div>
     </div>
   </div>

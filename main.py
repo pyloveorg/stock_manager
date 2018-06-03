@@ -33,38 +33,46 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config['DB']['SQLALCHEMY_DATABASE_URI']
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'SQLALCHEMY_DATABASE_URI'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config['DB']['SQLALCHEMY_TRACK_MODIFICATIONS']
 app.config['SECRET_KEY'] = config['DB']['SECRET_KEY']
-app.config['WHOOSH_BASE'] = 'whoosh'
+# app.config['WHOOSH_BASE'] = 'whoosh'
 
 Bootstrap(app)
 
 db.init_app(app)
 
+
 with app.test_request_context():
     if not database_exists(config['DB']['SQLALCHEMY_DATABASE_URI']):
         create_database(config['DB']['SQLALCHEMY_DATABASE_URI'])
-    from auth.models import User
+    from auth.models import User, WorkingTimeRecord, LeaveApplication
     from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
     db.create_all()
     db.session.commit()
     if not User.query.filter_by(username='admin').first():
         init_admin()
 
+
 from home.views import home_blueprint
 from auth.views import auth_blueprint
 from invoices.views import invoices_blueprint
+from stock.views import stock_blueprint
+
 
 app.register_blueprint(home_blueprint)
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(invoices_blueprint)
+app.register_blueprint(stock_blueprint)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
 
 from auth.models import User
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 if __name__ == '__main__':
    app.run(debug=True)
