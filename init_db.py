@@ -34,14 +34,14 @@ def init_admin():
     try:
         sa.orm.configure_mappers()
         app.app_context().push()
+        db.create_all()
         db.session.add(user)
         db.session.commit()
     except IntegrityError as e:
         print('W bazie istnieje już użytkownik o nazwie: '+user.username)
 
 def add_supp():
-    app.app_context().push()
-    db.create_all()
+
     """    suppliers_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     nip = db.Column(db.String(30), nullable=False)
@@ -77,5 +77,5 @@ def db_start():
 
 if __name__ == '__main__':
     # db_start()
-    # nit_admin()
     add_supp()
+    init_admin()
