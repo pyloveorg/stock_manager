@@ -4,27 +4,29 @@
 {% block title %}Add/Edit supplier{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-  <div class="container">
-  {% if edit_mode == 1 %}
-    <h3>Edit supplier data</h3>
-  {% else %}
-    <h3>Add new supplier</h3>
-  {% endif %}
-  </div>
-<div class="container">
-  <form class="form form-horizontal" method="POST" action="{{ action }}">
-    {{ form.csrf_token }}
-    {{ render_field(form.name, placeholder=form.name.label.text, class="col-sm-5") }}
-    {{ render_field(form.nip, placeholder=form.nip.label.text, class="col-sm-5") }}
-    {{ render_field(form.address, placeholder=form.address.label.text, class="col-sm-8") }}
-    {{ render_field(form.discount, placeholder=form.discount.label.text, class="col-sm-3") }}
-    <div class="container">
-      <button class="btn btn-md btn-primary" type="submit">Confirm</button>
-      <a href="{{url_for('invoices.suppliers')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+<div class="container container-fluid">
+    <div class="card">
+      <div class="card-header bg-secondary text-white">
+        {% if edit_mode == 1 %}
+          <strong>Edit supplier data</strong>
+        {% else %}
+          <strong>Add new supplier</strong>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <form class="form form-horizontal" method="POST" action="{{ action }}">
+          {{ form.csrf_token }}
+          {{ render_field(form.name, placeholder=form.name.label.text, class="col-sm-5") }}
+          {{ render_field(form.nip, placeholder=form.nip.label.text, class="col-sm-5") }}
+          {{ render_field(form.address, placeholder=form.address.label.text, class="col-sm-8") }}
+          {{ render_field(form.discount, placeholder=form.discount.label.text, class="col-sm-3") }}
+          <div class="container">
+            <button class="btn btn-md btn-primary" type="submit">Confirm</button>
+            <a href="{{url_for('invoices.suppliers')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
-</div>
 </div>
 {% endblock %}
 
