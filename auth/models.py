@@ -1,6 +1,13 @@
 __author__ = 'Jacek Kalbarczyk'
 
 from database import db
+from sqlalchemy_searchable import SearchQueryMixin
+from flask_sqlalchemy import BaseQuery
+from sqlalchemy_utils.types import TSVectorType
+
+
+class UserQuery(BaseQuery, SearchQueryMixin):
+    pass
 
 
 class User(db.Model):
@@ -8,6 +15,7 @@ class User(db.Model):
     User model for reviewers.
     """
     __tablename__ = 'users'
+    query_class = UserQuery
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     active = db.Column(db.Boolean, default=True)
     admin = db.Column(db.Boolean, default=False)
@@ -22,6 +30,7 @@ class User(db.Model):
     birth_date = db.Column(db.Date)
     working_days = db.relationship('WorkingTimeRecord', backref='user', lazy=True)
     leave_applications = db.relationship('LeaveApplication', backref='user', lazy=True)
+    search_vector = db.Column(TSVectorType('username', 'email', 'name', 'address'))
 
     def is_active(self):
         """

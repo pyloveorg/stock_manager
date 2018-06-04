@@ -57,8 +57,10 @@ sup_orders = db.Table('sup_orders',
                   db.Column('orders_id', db.Integer, db.ForeignKey('orders.orders_id'))
                   )
 
+
 class ProductsQuery(BaseQuery, SearchQueryMixin):
     pass
+
 
 class Products(db.Model):
     query_class = ProductsQuery

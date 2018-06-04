@@ -9,9 +9,9 @@ from os import path
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
+from sqlalchemy.orm.mapper import configure_mappers
 import sqlalchemy as sa
 from sqlalchemy_searchable import make_searchable
-from sqlalchemy.orm.mapper import configure_mappers
 
 
 def init_admin():
@@ -32,8 +32,8 @@ app.static_path = path.join(path.abspath(__file__), 'static')
 
 config = configparser.ConfigParser()
 config.read('config.ini')
-app.config['SQLALCHEMY_DATABASE_URI'] = config['DB']['SQLALCHEMY_DATABASE_URI']
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'SQLALCHEMY_DATABASE_URI'
+# app.config['SQLALCHEMY_DATABASE_URI'] = config['DB']['SQLALCHEMY_DATABASE_URI']
+app.config['SQLALCHEMY_DATABASE_URI'] = 'SQLALCHEMY_DATABASE_URI'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config['DB']['SQLALCHEMY_TRACK_MODIFICATIONS']
 app.config['SECRET_KEY'] = config['DB']['SECRET_KEY']
 # app.config['WHOOSH_BASE'] = 'whoosh'
