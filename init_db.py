@@ -41,8 +41,6 @@ def init_admin():
         print('W bazie istnieje już użytkownik o nazwie: '+user.username)
 
 def add_supp():
-    app.app_context().push()
-    db.create_all()
     """    suppliers_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     nip = db.Column(db.String(30), nullable=False)
