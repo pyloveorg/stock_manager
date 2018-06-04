@@ -11,6 +11,7 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 from sqlalchemy.orm.mapper import configure_mappers
 import sqlalchemy as sa
+from sqlalchemy_searchable import make_searchable
 
 
 def init_admin():
@@ -35,16 +36,19 @@ config.read('config.ini')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'SQLALCHEMY_DATABASE_URI'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config['DB']['SQLALCHEMY_TRACK_MODIFICATIONS']
 app.config['SECRET_KEY'] = config['DB']['SECRET_KEY']
-app.config['WHOOSH_BASE'] = 'whoosh'
+# app.config['WHOOSH_BASE'] = 'whoosh'
 
 Bootstrap(app)
 
 db.init_app(app)
+make_searchable(db.metadata)
+
+
 
 with app.test_request_context():
     if not database_exists(config['DB']['SQLALCHEMY_DATABASE_URI']):
         create_database(config['DB']['SQLALCHEMY_DATABASE_URI'])
-    from auth.models import User
+    from auth.models import User, WorkingTimeRecord, LeaveApplication
     from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
     sa.orm.configure_mappers()
     db.create_all()
