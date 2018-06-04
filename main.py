@@ -9,6 +9,9 @@ from os import path
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
+import sqlalchemy as sa
+from sqlalchemy_searchable import make_searchable
+from sqlalchemy.orm.mapper import configure_mappers
 
 
 def init_admin():
@@ -38,6 +41,8 @@ app.config['SECRET_KEY'] = config['DB']['SECRET_KEY']
 Bootstrap(app)
 
 db.init_app(app)
+make_searchable(db.metadata)
+
 
 
 with app.test_request_context():
@@ -45,6 +50,7 @@ with app.test_request_context():
         create_database(config['DB']['SQLALCHEMY_DATABASE_URI'])
     from auth.models import User, WorkingTimeRecord, LeaveApplication
     from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
+    sa.orm.configure_mappers()
     db.create_all()
     db.session.commit()
     if not User.query.filter_by(username='admin').first():
