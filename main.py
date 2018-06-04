@@ -55,18 +55,19 @@ db.init_app(app)
 
 from home.views import home_blueprint
 from auth.views import auth_blueprint
-from invoices.views import invoices_blueprint
+# rom invoices.views import invoices_blueprint
 from stock.views import stock_blueprint
 
 
 app.register_blueprint(home_blueprint)
 app.register_blueprint(auth_blueprint)
-app.register_blueprint(invoices_blueprint)
+# app.register_blueprint(invoices_blueprint)
 app.register_blueprint(stock_blueprint)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
+
 
 from auth.models import User
 
