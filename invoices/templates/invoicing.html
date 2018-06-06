@@ -10,34 +10,34 @@
 <div class="container">
     <h5>Choose customer by ID or name:</h5>
     <form method="POST">
-      <div class="form-group row">
-        <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Customer ID</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control form-control-lg" name="customer_id" placeholder="ID">
-        </div>
-      </div>
-        <div class="form-group row">
-        <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Customer Name</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control form-control-lg" id="colFormLabelLg" name="customer_name" placeholder="NAME">
-        </div>
-      </div>
-        <div class="form-group row">
-            <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Choose from list</label>
-            <div class="col-sm-10">
-                <select class="form-control form-control-lg " placeholder="NAME" name="customer_id_list">
-                    <option selected>Choose...</option>
-                    {% for customer in customers %}
-                    <option value="{{customer.customers_id}}">{{customer.name}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-          <div class="form-group row">
-            <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-            </div>
-          </div>
+		<div class="form-group row">
+			<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Customer ID</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control form-control-lg" name="customer_id" placeholder="ID">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Customer Name</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control form-control-lg" id="colFormLabelLg" name="customer_name" placeholder="NAME">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Choose from list</label>
+			<div class="col-sm-10">
+				<select class="form-control form-control-lg " placeholder="NAME" name="customer_id_list">
+				<option selected>Choose...</option>
+				{% for customer in customers %}
+				<option value="{{customer.customers_id}}">{{customer.name}}</option>
+				{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+			</div>
+		</div>
     </form>
 </div>
 {% endif %}
@@ -50,126 +50,125 @@
     <table class="table table-striped">
         <label>Selected Customer:</label>
         <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">NIP</th>
-            <th scope="col">Adress</th>
-            <th scope="col">Payment</th>
-        </tr>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Name</th>
+				<th scope="col">NIP</th>
+				<th scope="col">Adress</th>
+				<th scope="col">Payment</th>
+			</tr>
         </thead>
         <tbody>
-        <tr>
-        <td>{{selected_customer.customers_id}}</td>
-        <td>{{selected_customer.name}}</td>
-        <td>{{selected_customer.nip}}</td>
-        <td>{{selected_customer.adress}}</td>
-        <td>{{selected_customer.payment}}</td>
+			<tr>
+				<td>{{selected_customer.customers_id}}</td>
+				<td>{{selected_customer.name}}</td>
+				<td>{{selected_customer.nip}}</td>
+				<td>{{selected_customer.adress}}</td>
+				<td>{{selected_customer.payment}}</td>
             </tr>
         </tbody>
     </table>
 </div>
 
 <!-- table with selected products -->
-    {% if basket %}
+{% if basket %}
 
-    <div class="container">
-        <table class="table table-striped">
-            <label>Selected Products</label>
-            <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Group</th>
-                <th scope="col">Qty</th>
-                <th scope="col">Price</th>
-                <th scope="col">Amount</th>
-            </tr>
-            </thead>
-            <tbody>
-         {% for product in basket %}
-        <tr>
-        <td>{{product.id}}</td>
-        <td>{{product.product_name}}</td>
-        <td>{{product.product_group}}</td>
+<div class="container">
+	<table class="table table-striped">
+		<label>Selected Products</label>
+		<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Name</th>
+				<th scope="col">Group</th>
+				<th scope="col">Qty</th>
+				<th scope="col">Price</th>
+				<th scope="col">Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for product in basket %}
+			<tr>
+				<td>{{product.id}}</td>
+				<td>{{product.product_name}}</td>
+				<td>{{product.product_group}}</td>
 
-         <!-- Choosing product's amount -->
-        <td>
-            {% if product.product_quantity == 0 %}
-            <form method="POST">
-                <div class="form-row">
-                <div class="form-group col-md-6">
-                  <select id="inputState" class="form-control" name="product_qty" onchange="this.form.submit()">
-                    <option selected>Choose...</option>
-                      {% for i in range(1, product.stock_quantity+1) %}
-                    <option value="{{product.product_id}} {{i}}">{{i}}</option>
-                      {% endfor %}
-                  </select>
-                <div class="invalid-feedback">Example invalid custom select feedback</div>
-                </div>
-                </div>
+				<!-- Choosing product's amount -->
+				<td>
+				{% if product.product_quantity == 0 %}
+					<form method="POST">
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<select id="inputState" class="form-control" name="product_qty" onchange="this.form.submit()">
+									<option selected>Choose...</option>
+									{% for i in range(1, product.stock_quantity+1) %}
+									<option value="{{product.product_id}} {{i}}">{{i}}</option>
+								{% endfor %}
+								</select>
+							<div class="invalid-feedback">Example invalid custom select feedback</div>
+							</div>
+						</div>
+					</form>
+				{% else %}
+				{{product.product_quantity}}
+				{% endif %}
+				</td>
+				<td>{{product.product_price}}</td>
+				<td>{{product.product_amount}}</td>
+			</tr>
+		{% endfor %}
 
-            </form>
-            {% else %}
-            {{product.product_quantity}}
-            {% endif %}
-        </td>
-        <td>{{product.product_price}}</td>
-        <td>{{product.product_amount}}</td>
-            </tr>
-        {% endfor %}
-
-         <!-- Make invoice button -->
-            <tr>
-                {% if basket %}
-                <td colspan="4"></td>
-                <td colspan="2">
-                    <div class="text-md-right">
-                    <form method="POST">
-                        <input type="submit" name="make_invoice" value="Make Invoice" class="btn btn-primary btn-lg">
-                    </form>
-                    </div>
-                </td>
-                {% endif %}
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
+		<!-- Make invoice button -->
+			<tr>
+			{% if basket %}
+				<td colspan="4"></td>
+				<td colspan="2">
+					<div class="text-md-right">
+						<form method="POST">
+							<input type="submit" name="make_invoice" value="Make Invoice" class="btn btn-primary btn-lg">
+						</form>
+					</div>
+				</td>
+			{% endif %}
+			</tr>
+		</tbody>
+	</table>
+</div>
+{% endif %}
 
 <!-- product select form -->
 <div class="container">
     <h5>Choose product by ID or name:</h5>
     <form method="POST">
-      <div class="form-group row">
-        <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Product ID</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control form-control-lg" name="product_id" placeholder="ID">
-        </div>
-      </div>
-        <div class="form-group row">
-            <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Choose from list</label>
-            <div class="col-sm-10">
-                <select class="form-control form-control-lg " placeholder="NAME" name="product_id_list">
-                    <option selected>Choose...</option>
-                    {% for product in products %}
-                    <option value="{{product.products_id}}">{{product.name}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-          <div class="form-group row">
-            <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary btn-lg btn-block">Add to basket</button>
-            </div>
-          </div>
+		<div class="form-group row">
+		<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Product ID</label>
+			<div class="col-sm-10">
+			<	input type="text" class="form-control form-control-lg" name="product_id" placeholder="ID">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Choose from list</label>
+			<div class="col-sm-10">
+				<select class="form-control form-control-lg " placeholder="NAME" name="product_id_list">
+					<option selected>Choose...</option>
+					{% for product in products %}
+					<option value="{{product.products_id}}">{{product.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<button type="submit" class="btn btn-primary btn-lg btn-block">Add to basket</button>
+			</div>
+		</div>
     </form>
     <form method="POST">
-        <div class="form-group row">
-            <div class="col-sm-10">
-              <input type="submit" class="btn btn-danger btn-lg btn-block" name="clean" value="Clean basket">
-            </div>
-          </div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<input type="submit" class="btn btn-danger btn-lg btn-block" name="clean" value="Clean basket">
+			</div>
+		</div>
     </form>
 </div>
 
