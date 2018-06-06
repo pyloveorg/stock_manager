@@ -4,49 +4,43 @@
 {% block title %}Sign up{% endblock %}
 
 {% block content %}
-<!--<div class="container">-->
-  <!--<form>-->
-  <!--<div class="form-row">-->
-    <!--<div class="col">-->
-      <!--<input type="text" class="form-control" placeholder="First name">-->
-    <!--</div>-->
-    <!--<div class="col">-->
-      <!--<input type="text" class="form-control" placeholder="Last name">-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</form>-->
-
-<!--</div>-->
-<!--<div class="content-section">-->
-  <!--<div class="center">-->
-    <!--<h1>Register for an account</h1>-->
-    <!--<br/>-->
-    <!--{{ wtf.quick_form(form) }}-->
-  <!--</div>-->
-<!--</div>-->
-
-<div class="container">
-  <!--<form class="form form-horizontal" method="POST" action="/signup">-->
-  <form class="form form-horizontal" method="POST" action="{{ action }}">
-    {{ form.csrf_token }}
-
-    {{ render_field(form.username, placeholder=form.username.label.text, class="col-sm-5") }}
-    {{ render_field(form.email, placeholder=form.email.label.text, class="col-sm-5") }}
-    {{ render_field(form.password, placeholder=form.password.label.text, class="col-sm-5") }}
-    {{ render_field(form.confirm_password, placeholder=form.confirm_password.label.text, class="col-sm-5") }}
-    {{ render_field(form.name, placeholder=form.name.label.text, class="col-sm-5") }}
-    {{ render_field(form.address, placeholder=form.address.label.text, class="col-sm-8") }}
-    {{ render_field(form.zip_code, placeholder=form.zip_code.label.text, class="col-sm-3") }}
-    {{ render_field(form.city, placeholder=form.city.label.text, class="col-sm-5") }}
-    {{ render_field(form.phone_no, placeholder=form.phone_no.label.text, class="col-sm-3") }}
-    <!--{{ wtf.form_field(form.birth_date, class="form-control form-control-sm") }}-->
-    {% if error %}
-      <div class="alert alert-danger" role="alert">Username already exists in database</div>
-    {% elif success %}
-      <div class="alert alert-success" role="alert">{{ success_message }}</div>
-    {% endif %}
-    <button class="btn btn-sm btn-primary" type="submit">{% if action == '/signup' %}Sign up{% else %}Confirm changes{% endif %}</button>
-  </form>
+<div class="container container-fluid">
+    <div class="card">
+      <div class="card-header bg-secondary text-white">
+        {% if purpose == 'signup' %}
+          <strong>Signup user</strong>
+        {% else %}
+          <strong>Edit user data</strong>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <form class="form form-horizontal" method="POST" action="{{ action }}">
+          {{ form.csrf_token }}
+          {{ render_field(form.username, placeholder=form.username.label.text, class="col-sm-5") }}
+          {{ render_field(form.email, placeholder=form.email.label.text, class="col-sm-5") }}
+          {% if purpose == 'signup' %}
+          {{ render_field(form.password, placeholder=form.password.label.text, class="col-sm-5") }}
+          {{ render_field(form.confirm_password, placeholder=form.confirm_password.label.text, class="col-sm-5") }}
+          {% endif %}
+          {{ render_field(form.name, placeholder=form.name.label.text, class="col-sm-5") }}
+          {{ render_field(form.address, placeholder=form.address.label.text, class="col-sm-8") }}
+          {{ render_field(form.zip_code, placeholder=form.zip_code.label.text, class="col-sm-3") }}
+          {{ render_field(form.city, placeholder=form.city.label.text, class="col-sm-5") }}
+          {{ render_field(form.phone_no, placeholder=form.phone_no.label.text, class="col-sm-3") }}
+          {% if purpose != 'signup' and showadminfield == True %}
+          {{ render_field(form.admin, class="col-sm-1") }}
+          {% endif %}
+          <div class="container">
+            <button class="btn btn-md btn-primary" type="submit">Confirm</button>
+              {% if purpose == 'signup' %}
+                <a href="{{url_for('home.index')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+              {% else %}
+                <a href="{{url_for('auth.users')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+              {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
 </div>
 {% endblock %}
 

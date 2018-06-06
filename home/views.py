@@ -22,13 +22,5 @@ def navitem1():
 def navitem2():
     return redirect(url_for('home.index'))
 
-@home_blueprint.route('/test', methods=['GET'])
-def test():
-    from database import db
-    # sql = text('select name from penguins')
-    result = db.engine.execute('select id, username from users')
-    names = []
-    for row in result:
-        print(str(row[0])+'  '+row[1])
-    return redirect(url_for('home.index'))
+
 

@@ -4,36 +4,42 @@
 
 {% block content %}
 <div class="container">
-  <table class="table table-condensed">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Username</th>
-        <th>Name</th>
-        <th>Address</th>
-        <th>Phone no.</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in user_list %}
-      <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.username }}</td>
-        <td>{{ user.name }}</td>
-        <td>{{ user.address }}</td>
-        <td>{{ user.phone_no }}</td>
-        <td>
-          <a href="{{ url_for('auth.edit_user', user_id=user.id) }}" class="btn btn-sm btn-secondary" role="button">Edit</a>
-        </td>
-      </tr>
-
-      {% endfor %}
-    </tbody>
-  </table>
-  <!--<ul class="list-group">-->
-    <!--{% for user in user_list %}-->
-    <!--<li class="list-group-item">{{ user }}</li>-->
-    <!--{% endfor %}-->
-  <!--</ul>-->
+  <div class="card">
+    <div class="card-header bg-secondary text-white">
+      <strong>User list</strong>
+    </div>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone no.</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in user_list %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.address }}</td>
+          <td>{{ user.phone_no }}</td>
+          <td>
+            <a href="{{ url_for('auth.edit_user', user_id=user.id) }}" class="btn btn-sm btn-primary" role="button">Edit</a>
+          </td>
+          {% if current_user.admin or current_user.id == user.id%}
+          <td>
+            <a href="{{ url_for('auth.user_workplan', user_id=user.id, month=0,year=0) }}" class="btn btn-sm btn-primary" role="button">Workplan</a>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endblock %}

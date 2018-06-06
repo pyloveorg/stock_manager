@@ -4,19 +4,23 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="container">
-  <form class="form-signin" method="POST" action="/login">
-    {{ form.csrf_token }}
-    <!--{{ wtf.form_field(form.username, class="form-control form-control-sm") }}-->
-    <!--{{ wtf.form_field(form.password, class="form-control form-control-sm") }}-->
-    {{ render_field(form.username, placeholder=form.username.label.text, class="col-sm-5") }}
-    {{ render_field(form.password, placeholder=form.password.label.text, class="col-sm-5") }}
+<div class="container container-fluid">
+    <div class="card">
+      <div class="card-header bg-secondary text-white">
+        <strong>Login user</strong><br>
+      </div>
+      <div class="card-body">
 
-    {% if error %}
-      <div class="alert alert-danger" role="alert">Invalid username or password</div>
-    {% endif %}
-
-    <button class="btn btn-sm btn-primary" type="submit">Login</button>
-  </form>
+        <form class="form-signin" method="POST" action="/login">
+          {{ form.csrf_token }}
+          {{ render_field(form.username, placeholder=form.username.label.text, class="col-sm-5") }}
+          {{ render_field(form.password, placeholder=form.password.label.text, class="col-sm-5") }}
+          <div class="container">
+            <button class="btn btn-md btn-primary" type="submit">Login</button>
+            <a href="{{url_for('home.index')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>
+          </div>
+        </form>
+      </div>
+    </div>
 </div>
 {% endblock %}
