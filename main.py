@@ -33,10 +33,13 @@ app.static_path = path.join(path.abspath(__file__), 'static')
 config = configparser.ConfigParser()
 config.read('config.ini')
 # app.config['SQLALCHEMY_DATABASE_URI'] = config['DB']['SQLALCHEMY_DATABASE_URI']
-app.config['SQLALCHEMY_DATABASE_URI'] = 'SQLALCHEMY_DATABASE_URI'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'SQLALCHEMY_DATABASE_URI'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/stock_manager'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://nibzquvhrbkley:228d0b2cb8da271731b2af1978e9666f5e875fb7b38d1aa91213a9f2264b6043@ec2-79-125-12-27.eu-west-1.compute.amazonaws.com:5432/d2t6dujcbf3e53'
+
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config['DB']['SQLALCHEMY_TRACK_MODIFICATIONS']
 app.config['SECRET_KEY'] = config['DB']['SECRET_KEY']
-# app.config['WHOOSH_BASE'] = 'whoosh'
 
 Bootstrap(app)
 
