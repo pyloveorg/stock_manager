@@ -76,7 +76,7 @@
         <td>
             {% if current_user.admin %}
             <form action="{{ url_for('auth.clear_workplan', user_id=userWorkplan.user_id, day=day.date.day, month=day.date.month, year=day.date.year) }}" method="post">
-                <button type="submit" class="btn btn-sm btn-primary">Clear</button>
+                <button type="submit" class="btn btn-sm btn-danger">Clear</button>
             </form>
             {% endif %}
         </td>
