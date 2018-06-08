@@ -17,7 +17,7 @@
     <tbody>
       {% for user in user_list %}
       <tr>
-        <td>{{ user.id }}</td>
+        <td>{{ loop.index }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.address }}</td>
@@ -30,10 +30,5 @@
       {% endfor %}
     </tbody>
   </table>
-  <!--<ul class="list-group">-->
-    <!--{% for user in user_list %}-->
-    <!--<li class="list-group-item">{{ user }}</li>-->
-    <!--{% endfor %}-->
-  <!--</ul>-->
 </div>
 {% endblock %}
