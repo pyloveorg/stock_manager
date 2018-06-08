@@ -51,7 +51,7 @@ def add_supp():
     supplier1 = Suppliers(
         name='Engine Company 2',
         nip='35223425525',
-        adress="Engine town",
+        address="Engine town",
         discount=10.15
     )
     sa.orm.configure_mappers()
@@ -77,5 +77,5 @@ def db_start():
 
 if __name__ == '__main__':
     # db_start()
-    init_admin()
+    # nit_admin()
     add_supp()
