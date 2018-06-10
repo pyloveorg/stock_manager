@@ -1,6 +1,7 @@
 __author__ = 'StockManager_Crew'
 
-import configparser
+# import configparser
+from config_deployment import DB
 from database import db
 from flask import Flask
 from flask_bootstrap import Bootstrap
@@ -12,7 +13,6 @@ from werkzeug.security import generate_password_hash
 from sqlalchemy.orm.mapper import configure_mappers
 import sqlalchemy as sa
 from sqlalchemy_searchable import make_searchable
-
 
 def init_admin():
     user = User()
@@ -30,16 +30,9 @@ def init_admin():
 app = Flask(__name__)
 app.static_path = path.join(path.abspath(__file__), 'static')
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-# app.config['SQLALCHEMY_DATABASE_URI'] = config['DB']['SQLALCHEMY_DATABASE_URI']
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'SQLALCHEMY_DATABASE_URI'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/stock_manager'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://nibzquvhrbkley:228d0b2cb8da271731b2af1978e9666f5e875fb7b38d1aa91213a9f2264b6043@ec2-79-125-12-27.eu-west-1.compute.amazonaws.com:5432/d2t6dujcbf3e53'
-
-
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config['DB']['SQLALCHEMY_TRACK_MODIFICATIONS']
-app.config['SECRET_KEY'] = config['DB']['SECRET_KEY']
+app.config['SQLALCHEMY_DATABASE_URI'] = DB.SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = DB.SQLALCHEMY_TRACK_MODIFICATIONS
+app.config['SECRET_KEY'] = DB.SECRET_KEY
 
 Bootstrap(app)
 
@@ -49,8 +42,8 @@ make_searchable(db.metadata)
 
 
 with app.test_request_context():
-    if not database_exists(config['DB']['SQLALCHEMY_DATABASE_URI']):
-        create_database(config['DB']['SQLALCHEMY_DATABASE_URI'])
+    if not database_exists(DB.SQLALCHEMY_DATABASE_URI):
+        create_database(DB.SQLALCHEMY_DATABASE_URI)
     from auth.models import User, WorkingTimeRecord, LeaveApplication
     from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
     sa.orm.configure_mappers()
