@@ -16,7 +16,7 @@ invoices_blueprint = Blueprint('invoices', __name__, template_folder='templates'
 
 
 @invoices_blueprint.route('/invoicing', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def customer_select():
     customers = Customers.query.all()
 
@@ -52,7 +52,7 @@ def customer_select():
     return render_template('invoicing.html',customers=customers)
 
 @invoices_blueprint.route('/invoicing/customer/<int:id>', methods=['GET','POST'])
-#@login_required
+@login_required
 def products_select(id):
     products = Products.query.all()
     selected_customer = Customers.query.get_or_404(id)
@@ -194,7 +194,7 @@ def products_select(id):
 
 #All invoices
 @invoices_blueprint.route('/invoices', methods=['GET','POST'])
-#@login_required
+@login_required
 def invoices_archive():
     invoices = Invoices.query.all()
     if request.method == 'POST':
@@ -204,7 +204,7 @@ def invoices_archive():
 
 # Select invoices by customer
 @invoices_blueprint.route('/invoices/customer', methods=['GET','POST'])
-#@login_required
+@login_required
 def invoices_by_customer():
     customers = Customers.query.all()
     if request.method == 'POST':
@@ -229,7 +229,7 @@ def invoices_by_customer():
 
 #List of selected customer's invoices
 @invoices_blueprint.route('/invoices/customer/<int:id>', methods=['GET','POST'])
-#@login_required
+@login_required
 def customer_invoices(id):
     selected_customer = Customers.query.get_or_404(id)
     if request.method == 'POST':
@@ -239,7 +239,7 @@ def customer_invoices(id):
 
 # Select invoices by product
 @invoices_blueprint.route('/invoices/product', methods=['GET','POST'])
-#@login_required
+@login_required
 def invoices_by_product():
     products = Products.query.all()
     if request.method == 'POST':
@@ -324,7 +324,7 @@ def print_pdf(inv_id):
 
 #Orders to supplier:
 @invoices_blueprint.route('/order/<int:ord_id>', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def supplier_order(ord_id):
     order = Orders.query.get_or_404(ord_id)
     if request.method == 'POST':
@@ -336,7 +336,7 @@ def supplier_order(ord_id):
 
 #Sent orders
 @invoices_blueprint.route('/orders', methods=['GET','POST'])
-#@login_required
+@login_required
 def orders_archive():
     sent_orders = Orders.query.filter_by(sent=True).all()
     if request.method == 'POST':
@@ -348,7 +348,7 @@ def orders_archive():
 
 #Orders to send
 @invoices_blueprint.route('/orders/to_order', methods=['GET','POST'])
-#@login_required
+@login_required
 def to_order():
     new_orders = Orders.query.filter_by(sent=False).all()
     if request.form.get('select'):
@@ -364,7 +364,7 @@ def to_order():
 
 # Select orders by supplier
 @invoices_blueprint.route('/orders/supplier', methods=['GET','POST'])
-#@login_required
+@login_required
 def orders_by_supplier():
     suppliers = Suppliers.query.all()
     if request.method == 'POST':
@@ -388,7 +388,7 @@ def orders_by_supplier():
 
 #List of selected supplier's orders
 @invoices_blueprint.route('/orders/supplier/<int:id>', methods=['GET','POST'])
-#@login_required
+@login_required
 def supplier_orders(id):
     selected_supplier = Suppliers.query.get_or_404(id)
     if request.method == 'POST':
