@@ -41,7 +41,7 @@ def new_stock(name, group, stock_quantity, price, supplier_id):
 
 if __name__ == '__main__':
 
-    from main import app
+    from __init__ import app
     sa.orm.configure_mappers()
     app.app_context().push()
     db.create_all()

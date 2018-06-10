@@ -3,7 +3,20 @@
 {% block title %}Users{% endblock %}
 
 {% block content %}
+
 <div class="container">
+<form action="/users" method="post">
+  <div class="row">
+    <div class="col-md-auto">
+      <input type="text" class="form-control" placeholder="Search" name="query">
+      <small id="searchHelp" class="form-text text-muted"></small>
+      <div class="row_button">
+        <input class="btn btn-primary" type="submit" value="Submit">
+      </div>
+    </div>
+  </div>
+</form>
+
   <div class="card">
     <div class="card-header bg-secondary text-white">
       <strong>User list</strong>

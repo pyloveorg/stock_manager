@@ -8,6 +8,7 @@ from database import db
 from flask import request
 import datetime
 import calendar
+from sqlalchemy_searchable import search
 signupTemplate = 'signup.html'
 loginModalTemplate = 'login_modal.html'
 loginTemplate = 'login.html'
@@ -81,11 +82,16 @@ def logout():
     return render_template(baseTemplate)
 
 
-@auth_blueprint.route('/users', methods=['GET'])
+@auth_blueprint.route('/users', methods=['GET', 'POST'])
 @login_required
 def users():
     if current_user.admin is True:
-        user_list = User.query.order_by(User.username).all()
+        if request.method == 'POST':
+            query = request.form.get('query')
+            user_list = User.query.order_by(User.username)
+            user_list = search(user_list, query)
+        else:
+            user_list = User.query.order_by(User.username).all()
     else:
         user_list = User.query.filter_by(id=current_user.id)
     return render_template(usersTemplate, user_list=user_list)

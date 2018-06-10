@@ -27,7 +27,7 @@ def search_engine(query):
 
 
 if __name__ == '__main__':
-    from main import app
+    from __init__ import app
     app.app_context().push()
     db.create_all()
     search_engine(query)

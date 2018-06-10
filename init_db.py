@@ -2,7 +2,7 @@ __author__ = 'StockManager_Crew'
 
 import configparser
 from database import db
-from main import app
+from __init__ import app
 from auth.models import User
 from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers
 from sqlalchemy import create_engine
