@@ -1,6 +1,7 @@
 .idea
 *.pyc
 config.ini
+config_deployment.py
 __pycache__/*
 /venv
 app_test.py
