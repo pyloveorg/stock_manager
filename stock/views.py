@@ -11,7 +11,7 @@ stock_blueprint = Blueprint("stock", __name__, template_folder='templates')
 
 def columns_tr(model):
     columns = {}
-    product_columns = model.__table__.columns.keys()
+    product_columns = model.__table__.columns.keys()[:-2]
     columns["Columns"] = product_columns
     return columns
 
