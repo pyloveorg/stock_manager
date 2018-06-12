@@ -190,6 +190,7 @@ def products_select(id):
                     db.session.commit()
             flash('Invoice added', 'success')
             return redirect(url_for('selected_invoice', inv_id=inv_id))
+    return render_template('invoicing.html', products=products, selected_customer=selected_customer)
 # Invoices Archive
 
 #All invoices
