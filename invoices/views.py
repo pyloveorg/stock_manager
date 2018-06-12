@@ -422,10 +422,12 @@ def edit_customer(customer_id):
         form.name.data = customer.name
         form.nip.data = customer.nip
         form.address.data = customer.address
+        form.payment.data = customer.payment
     elif form.validate_on_submit():
         customer.name = form.name.data
         customer.nip = form.nip.data
         customer.address = form.address.data
+        customer.payment = form.payment.data
         db.session.commit()
         flash('Customer successfully updated', 'success')
         return redirect(url_for('invoices.customers'))
@@ -468,6 +470,7 @@ def add_customer():
         customer.name = form.name.data
         customer.address = form.address.data
         customer.nip = form.nip.data
+        customer.payment = form.payment.data
         db.session.add(customer)
         db.session.commit()
         flash('Customer added successfully', 'success')
