@@ -27,7 +27,7 @@ def customer_select():
                 if request.form.get('customer_id'):
                     id = int(request.form.get('customer_id'))
                     if Customers.query.get(id):
-                        return redirect(url_for('invioices.products_select', id=id))
+                        return redirect(url_for('invoices.products_select', id=id))
                     else:
                         flash('No such customer in db, try again', 'danger')
                         return render_template('invoicing.html', customers=customers)
@@ -39,10 +39,10 @@ def customer_select():
                     except AttributeError:
                         flash('There is no such customer in db', 'danger')
                         return render_template('invoicing.html', customers=customers)
-                    return redirect(url_for('invioices.products_select', id=id))
+                    return redirect(url_for('invoices.products_select', id=id))
                 elif request.method == 'POST' and request.form.get('customer_id_list'):
                     id = int(request.form.get('customer_id_list'))
-                    return redirect(url_for('invioices.products_select', id=id))
+                    return redirect(url_for('invoices.products_select', id=id))
                 else:
                     flash('No such customer in db, try again', 'danger')
                     return render_template('invoicing.html', customers=customers)
@@ -190,6 +190,9 @@ def products_select(id):
                     db.session.commit()
             flash('Invoice added', 'success')
             return redirect(url_for('selected_invoice', inv_id=inv_id))
+    else:
+        return render_template('invoicing.html', products=products, selected_customer=selected_customer)
+
 # Invoices Archive
 
 #All invoices
