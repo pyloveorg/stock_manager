@@ -27,7 +27,7 @@ def customer_select():
                 if request.form.get('customer_id'):
                     id = int(request.form.get('customer_id'))
                     if Customers.query.get(id):
-                        return redirect(url_for('invioices.products_select', id=id))
+                        return redirect(url_for('invoices.products_select', id=id))
                     else:
                         flash('No such customer in db, try again', 'danger')
                         return render_template('invoicing.html', customers=customers)
@@ -39,10 +39,10 @@ def customer_select():
                     except AttributeError:
                         flash('There is no such customer in db', 'danger')
                         return render_template('invoicing.html', customers=customers)
-                    return redirect(url_for('invioices.products_select', id=id))
+                    return redirect(url_for('invoices.products_select', id=id))
                 elif request.method == 'POST' and request.form.get('customer_id_list'):
                     id = int(request.form.get('customer_id_list'))
-                    return redirect(url_for('invioices.products_select', id=id))
+                    return redirect(url_for('invoices.products_select', id=id))
                 else:
                     flash('No such customer in db, try again', 'danger')
                     return render_template('invoicing.html', customers=customers)
