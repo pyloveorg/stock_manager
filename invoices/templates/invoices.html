@@ -1,55 +1,55 @@
 {% extends 'index.html' %}
 {% set page_id = 'invoices' %}
-{% block body %}
+{% block content %}
 
 <!-- nav breadcrumb -->
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{url_for('invoices.invoices_archive')}}">All invoices</a></li>
-    <li class="breadcrumb-item"><a href="{{url_for('invoices.invoices_by_customer')}}">By customer</a></li>
-    <li class="breadcrumb-item"><a href="{{url_for('invoices.invoices_by_product')}}">By product</a></li>
-  </ol>
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="{{url_for('invoices.invoices_archive')}}">All invoices</a></li>
+		<li class="breadcrumb-item"><a href="{{url_for('invoices.invoices_by_customer')}}">By customer</a></li>
+		<li class="breadcrumb-item"><a href="{{url_for('invoices.invoices_by_product')}}">By product</a></li>
+	</ol>
 </nav>
 
 <!-- table with invoices -->
 {% if invoices %}
-    <div class="container">
-        <table class="table table-striped">
-            <label>Invoices</label>
-            <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Date</th>
-                <th scope="col">Customer name/ID</th>
-                <th scope="col">Products IDs</th>
-                <th scope="col">Net value</th>
-                <th scope="col">Payment day</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-         {% for invoice in invoices %}
-        <tr>
-        <td>{{invoice.invoices_id}}</td>
-        <td>{{invoice.date.date()}}</td>
-        <td>{{invoice.customer.name}}/ {{invoice.customer_id}}</td>
-        <td>{% for product in invoice.invoicing %}
-            {{product.products_id}}
-            {% endfor %}
-        </td>
-        <td>{{invoice.net}}</td>
-        <td>{{invoice.payment_date.date()}}</td>
-        <td>
-            <form method="POST">
-            <input type="hidden" name="selected_invoice" value="{{invoice.invoices_id}}" />
-            <button type="submit" class="btn btn-outline-primary">Select</button>
-            </form>
-        </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-        </table>
-    </div>
+<div class="container">
+	<table class="table table-striped">
+		<label>Invoices</label>
+		<thead>
+		<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Date</th>
+			<th scope="col">Customer name/ID</th>
+			<th scope="col">Products IDs</th>
+			<th scope="col">Net value</th>
+			<th scope="col">Payment day</th>
+			<th scope="col"></th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for invoice in invoices %}
+			<tr>
+				<td>{{invoice.invoices_id}}</td>
+				<td>{{invoice.date.date()}}</td>
+				<td>{{invoice.customer.name}}/ {{invoice.customer_id}}</td>
+				<td>{% for product in invoice.invoicing %}
+				{{product.products_id}}
+				{% endfor %}
+				</td>
+				<td>{{invoice.net}}</td>
+				<td>{{invoice.payment_date.date()}}</td>
+				<td>
+					<form method="POST">
+						<input type="hidden" name="selected_invoice" value="{{invoice.invoices_id}}" />
+						<button type="submit" class="btn btn-outline-primary">Select</button>
+					</form>
+				</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</div>
 {% endif %}
 
 <!-- Choose customer -->
@@ -58,31 +58,31 @@
     <h3>Invoice filter by customer</h3>
 </div>
 <div class="container">
-    <h5>Choose customer by ID or name:</h5>
-    <form method="POST">
-      <div class="form-group row">
-        <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Customer ID</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control form-control-lg" name="customer_id" placeholder="ID">
-        </div>
-      </div>
-        <div class="form-group row">
-            <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Choose from list</label>
-            <div class="col-sm-10">
-                <select class="form-control form-control-lg " placeholder="NAME" name="customer_id_list">
-                    <option selected>Choose...</option>
-                    {% for customer in customers %}
-                    <option value="{{customer.customers_id}}">{{customer.name}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-          <div class="form-group row">
-            <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-            </div>
-          </div>
-    </form>
+	<h5>Choose customer by ID or name:</h5>
+	<form method="POST">
+		<div class="form-group row">
+			<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Customer ID</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control form-control-lg" name="customer_id" placeholder="ID">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Choose from list</label>
+			<div class="col-sm-10">
+				<select class="form-control form-control-lg " placeholder="NAME" name="customer_id_list">
+					<option selected>Choose...</option>
+					{% for customer in customers %}
+					<option value="{{customer.customers_id}}">{{customer.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+			</div>
+		</div>
+	</form>
 </div>
 {% endif %}
 
@@ -90,31 +90,31 @@
 {% if selected_customer %}
 
 <div class="container">
-    <div class="card-deck">
-    {% for invoice in selected_customer.invoices %}
-        <div class="col-sm-4">
-        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-        <div class="card-header">Invoice ID: {{invoice.invoices_id}}</div>
-            <div class="card-body">
-            <h5 class="card-title">Date: {{invoice.date.date()}}</h5>
-            <p class="card-text">Products: <br>
-            {% for product in invoice.invoicing %}
-            {{product.name}} ID: {{product.products_id}} <br>
-            {% endfor %}
-            </p>
-                <div class="card-footer bg-transparent border-success">
-                  <form method="POST">
-                  <input type="hidden" name="selected_invoice" value="{{invoice.invoices_id}}" />
-                  <button type="submit" class="btn btn-outline-light">
-                          Select
-                  </button>
-                  </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-    </div>
+	<div class="card-deck">
+	{% for invoice in selected_customer.invoices %}
+		<div class="col-sm-4">
+			<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+				<div class="card-header">Invoice ID: {{invoice.invoices_id}}</div>
+				<div class="card-body">
+					<h5 class="card-title">Date: {{invoice.date.date()}}</h5>
+					<p class="card-text">Products: <br>
+					{% for product in invoice.invoicing %}
+					{{product.name}} ID: {{product.products_id}} <br>
+					{% endfor %}
+					</p>
+					<div class="card-footer bg-transparent border-success">
+						<form method="POST">
+							<input type="hidden" name="selected_invoice" value="{{invoice.invoices_id}}" />
+								<button type="submit" class="btn btn-outline-light">
+									  Select
+								</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
 </div>
 
 {% endif %}
@@ -126,12 +126,12 @@
 <div class="container">
     <h5>Choose product by ID or name:</h5>
     <form method="POST">
-      <div class="form-group row">
-        <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Product ID</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control form-control-lg" name="product_id" placeholder="ID">
-        </div>
-      </div>
+		<div class="form-group row">
+			<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Product ID</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control form-control-lg" name="product_id" placeholder="ID">
+			</div>
+		</div>
         <div class="form-group row">
             <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Choose from list</label>
             <div class="col-sm-10">
@@ -143,11 +143,11 @@
                 </select>
             </div>
         </div>
-          <div class="form-group row">
-            <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-            </div>
-          </div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+			</div>
+		</div>
     </form>
 </div>
 {% endif %}
@@ -161,27 +161,27 @@
         <div class="col-sm-4">
             <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
                 <div class="card-header">Invoice ID: {{invoice.invoices_id}}</div>
-                  <div class="card-body">
-                    <h5 class="card-title">Customer: {{invoice.customer.name}}</h5>
-                      <h5 class="card-title">Date: {{invoice.date.date()}}</h5>
-                    <p class="card-text">Products: <br>
-                    {% for product in invoice.invoicing %}
-                    {{product.name}} ID: {{product.products_id}} <br>
-                    {% endfor %}
-                    </p>
-                  <div class="card-footer bg-transparent border-success">
-                      <form method="POST">
-                      <input type="hidden" name="selected_invoice" value="{{invoice.invoices_id}}" />
-                      <button type="submit" class="btn btn-outline-light">
-                              Select
-                      </button>
-                      </form>
-                  </div>
-                  </div>
-                </div>
-            </div>
+				<div class="card-body">
+					<h5 class="card-title">Customer: {{invoice.customer.name}}</h5>
+					<h5 class="card-title">Date: {{invoice.date.date()}}</h5>
+					<p class="card-text">Products: <br>
+					{% for product in invoice.invoicing %}
+					{{product.name}} ID: {{product.products_id}} <br>
+					{% endfor %}
+					</p>
+					<div class="card-footer bg-transparent border-success">
+						<form method="POST">
+							<input type="hidden" name="selected_invoice" value="{{invoice.invoices_id}}" />
+							<button type="submit" class="btn btn-outline-light">
+								  Select
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
      {% endfor %}
-</div>
+	</div>
 </div>
 
 

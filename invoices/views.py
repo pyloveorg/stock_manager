@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, flash
-from datetime import datetime
+import datetime
 
 from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
 from database import db
@@ -7,6 +7,7 @@ from flask_weasyprint import HTML, render_pdf, CSS
 from flask_mail import Message
 from invoices.forms import CustomerForm, SupplierForm
 from flask_login import login_required
+from mail_config import mail
 
 baseTemplate = 'index.html'
 
@@ -189,9 +190,9 @@ def products_select(id):
                     new_order.sum = order_sum
                     db.session.commit()
             flash('Invoice added', 'success')
-            return redirect(url_for('selected_invoice', inv_id=inv_id))
-    else:
-        return render_template('invoicing.html', products=products, selected_customer=selected_customer)
+            return redirect(url_for('invoices.selected_invoice', inv_id=inv_id))
+
+    return render_template('invoicing.html', products=products, selected_customer=selected_customer)
 
 # Invoices Archive
 

@@ -1,102 +1,101 @@
 {% extends 'index.html' %}
 {% set page_id = 'orders' %}
-{% block body %}
+{% block content %}
 
 <!-- nav breadcrumb -->
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{url_for('invoices.to_order')}}">To order</a></li>
-    <li class="breadcrumb-item"><a href="{{url_for('invoices.orders_archive')}}">Ordered</a></li>
-    <li class="breadcrumb-item"><a href="{{url_for('invoices.orders_by_supplier')}}">By supplier</a></li>
-  </ol>
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="{{url_for('invoices.to_order')}}">To order</a></li>
+		<li class="breadcrumb-item"><a href="{{url_for('invoices.orders_archive')}}">Ordered</a></li>
+		<li class="breadcrumb-item"><a href="{{url_for('invoices.orders_by_supplier')}}">By supplier</a></li>
+	</ol>
 </nav>
 
 <!-- table with sended orders -->
 {% if sent_orders %}
-    <div class="container">
-        <table class="table table-striped">
-            <label>Invoices</label>
-            <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Date</th>
-                <th scope="col">Supplier name/ID</th>
-                <th scope="col">Products IDs</th>
-                <th scope="col">Net value</th>
-                <th scope="col">Sum</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-         {% for order in sent_orders %}
-        <tr>
-        <td>{{order.orders_id}}</td>
-        <td>{{order.date.date()}}</td>
-        <td>{{order.supplier.name}}/ {{order.supplier_id}}</td>
-        <td>{% for product in order.ordering %}
-            {{product.products_id}}
-            {% endfor %}
-        </td>
-        <td>{{order.net}}</td>
-        <td>{{order.sum}}</td>
-        <td>
-            <form method="POST">
-            <input type="hidden" name="selected_order" value="{{order.orders_id}}" />
-            <button type="submit" class="btn btn-outline-primary">Select</button>
-            </form>
-        </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-        </table>
-    </div>
+<div class="container">
+	<table class="table table-striped">
+		<label>Invoices</label>
+		<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Date</th>
+				<th scope="col">Supplier name/ID</th>
+				<th scope="col">Products IDs</th>
+				<th scope="col">Net value</th>
+				<th scope="col">Sum</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			 {% for order in sent_orders %}
+			<tr>
+				<td>{{order.orders_id}}</td>
+				<td>{{order.date.date()}}</td>
+				<td>{{order.supplier.name}}/ {{order.supplier_id}}</td>
+				<td>{% for product in order.ordering %}
+					{{product.products_id}}
+					{% endfor %}
+				</td>
+				<td>{{order.net}}</td>
+				<td>{{order.sum}}</td>
+				<td>
+					<form method="POST">
+						<input type="hidden" name="selected_order" value="{{order.orders_id}}" />
+						<button type="submit" class="btn btn-outline-primary">Select</button>
+					</form>
+				</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+</div>
 {% endif %}
 
 <!-- cards with orders to send -->
 <!-- if we have to order products -->
 {% if new_orders %}
 <div class="container">
-  <div class="card-deck">
-<!-- Card with basic automatic orders info -->
-{% for order in new_orders %}
-
-    <div class="col-sm-4">
-      <div class="card text-center border-danger mb-3">
-        <div class="card-header">
-          Order no {{order.orders_id}} from {{order.date.date()}}
-        </div>
-          <div class="card-body text-danger">
-            <h5 class="card-title">Supplier: {{order.supplier.name}} (ID:{{order.supplier.suppliers_id}})</h5>
-            <p class="card-text">Products at order:<br>
-            {%for item in order.ordering %}
-                {{item.name}} ID: {{item.products_id}} <br>
-            {% endfor %}
-            </p>
-              <!-- Buttons to show or send order  -->
-            <div class="row justify-content-md-center">
-              <div class="col-sm-3">
-              <form method="POST">
-              <input type="hidden" name="select" value="{{order.orders_id}}" />
-              <button type="submit" class="btn btn-outline-danger">Select</button>
-              </form>
-            </div>
-            <div class="col-sm-3">
-            <form method="POST">
-              <input type="hidden" name="send" value="{{order.orders_id}}" />
-            <button type="submit" class="btn btn-outline-danger">Send</button>
-            </form>
-          </div>
-          </div>
-          <div class="card-footer text-muted">
-            You are running out of this parts
-          </div>
-      </div>
-    </div>
-    </div>
-    {% endfor %}
-  </div>
+	<div class="card-deck">
+	<!-- Card with basic automatic orders info -->
+	{% for order in new_orders %}
+		<div class="col-sm-4">
+			<div class="card text-center border-danger mb-3">
+				<div class="card-header">
+				Order no {{order.orders_id}} from {{order.date.date()}}
+				</div>
+				<div class="card-body text-danger">
+					<h5 class="card-title">Supplier: {{order.supplier.name}} (ID:{{order.supplier.suppliers_id}})</h5>
+					<p class="card-text">Products at order:<br>
+					{%for item in order.ordering %}
+					{{item.name}} ID: {{item.products_id}} <br>
+					{% endfor %}
+					</p>
+					<!-- Buttons to show or send order  -->
+					<div class="row justify-content-md-center">
+						<div class="col-sm-3">
+							<form method="POST">
+								<input type="hidden" name="select" value="{{order.orders_id}}" />
+								<button type="submit" class="btn btn-outline-danger">Select</button>
+							</form>
+						</div>
+						<div class="col-sm-3">
+							<form method="POST">
+								<input type="hidden" name="send" value="{{order.orders_id}}" />
+								<button type="submit" class="btn btn-outline-danger">Send</button>
+							</form>
+						</div>
+					</div>
+					<div class="card-footer text-muted">
+					You are running out of this parts
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
 </div>
- {% endif %}
+{% endif %}
 
 <!-- Choose supplier -->
 {% if suppliers %}
@@ -106,28 +105,28 @@
 <div class="container">
     <h5>Choose supplier by ID or name:</h5>
     <form method="POST">
-      <div class="form-group row">
-        <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Supplier ID</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control form-control-lg" name="supplier_id" placeholder="ID">
-        </div>
-      </div>
-        <div class="form-group row">
-            <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Choose from list</label>
-            <div class="col-sm-10">
-                <select class="form-control form-control-lg " placeholder="NAME" name="supplier_id_list">
-                    <option selected>Choose...</option>
-                    {% for supplier in suppliers %}
-                    <option value="{{supplier.suppliers_id}}">{{supplier.name}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-          <div class="form-group row">
-            <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-            </div>
-          </div>
+		<div class="form-group row">
+			<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Supplier ID</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control form-control-lg" name="supplier_id" placeholder="ID">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Choose from list</label>
+			<div class="col-sm-10">
+				<select class="form-control form-control-lg " placeholder="NAME" name="supplier_id_list">
+					<option selected>Choose...</option>
+					{% for supplier in suppliers %}
+					<option value="{{supplier.suppliers_id}}">{{supplier.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+			</div>
+		</div>
     </form>
 </div>
 {% endif %}
@@ -135,40 +134,41 @@
 <!-- Selected supplier orders -->
 {% if selected_supplier %}
 <div class="container">
-    <div class="card-deck">
-    {% for order in selected_supplier.orders %}
-        <div class="col-sm-4">
-        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-<div class="card-header">
-          Order no {{order.orders_id}} from {{order.date.date()}}
-        </div>
-          <div class="card-body">
-            <h5 class="card-title">Supplier: {{order.supplier.name}} (ID:{{order.supplier.suppliers_id}})</h5>
-            <p class="card-text">Products at order:<br>
-            {%for item in order.ordering %}
-                {{item.name}} ID: {{item.products_id}} <br>
-            {% endfor %}
-            </p>
-              <!-- Button to show order  -->
-                 <div class="card-footer bg-transparent border-success">
-                  <form method="POST">
-                  <input type="hidden" name="select" value="{{order.orders_id}}" />
-                  <button type="submit" class="btn btn-outline-light">
-                          Select
-                  </button>
-                  </form>
-                    </div>
-          <div class="card-footer text-muted">
-            This order was send
-          </div>
-      </div>
-            </div>
-        </div>
-    {% endfor %}
-    </div>
+	<div class="card-deck">
+	{% for order in selected_supplier.orders %}
+		<div class="col-sm-4">
+			<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+				<div class="card-header">
+				Order no {{order.orders_id}} from {{order.date.date()}}
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">Supplier: {{order.supplier.name}} (ID:{{order.supplier.suppliers_id}})</h5>
+					<p class="card-text">Products at order:<br>
+					{%for item in order.ordering %}
+					{{item.name}} ID: {{item.products_id}} <br>
+					{% endfor %}
+					</p>
+					<!-- Button to show order  -->
+					<div class="card-footer bg-transparent border-success">
+						<form method="POST">
+							<input type="hidden" name="select" value="{{order.orders_id}}" />
+							<button type="submit" class="btn btn-outline-light">
+							Select
+							</button>
+						</form>
+					</div>
+					<div class="card-footer text-muted">
+					This order was send
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
 </div>
 
 {% endif %}
 
 
 {% endblock %}
+

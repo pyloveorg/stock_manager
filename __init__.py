@@ -14,6 +14,7 @@ from sqlalchemy.orm.mapper import configure_mappers
 import sqlalchemy as sa
 from sqlalchemy_searchable import make_searchable
 
+
 def init_admin():
     user = User()
     user.username = "admin"
@@ -33,6 +34,7 @@ app.static_path = path.join(path.abspath(__file__), 'static')
 app.config['SQLALCHEMY_DATABASE_URI'] = DB.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = DB.SQLALCHEMY_TRACK_MODIFICATIONS
 app.config['SECRET_KEY'] = DB.SECRET_KEY
+
 
 Bootstrap(app)
 
