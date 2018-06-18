@@ -24,6 +24,7 @@ def search():
     if True:
         cur = request.args.get("curr")
         searched_products = search_engine(query=request.args.get('query'))
+        currency_rate = currency(cur=cur)
         return render_template(productsTemplate,
                                searched_products=searched_products,
                                products_columns=products_columns,
