@@ -19,6 +19,7 @@
           {{ render_field(form.name, placeholder=form.name.label.text, class="col-sm-5") }}
           {{ render_field(form.nip, placeholder=form.nip.label.text, class="col-sm-5") }}
           {{ render_field(form.address, placeholder=form.address.label.text, class="col-sm-8") }}
+          {{ render_field(form.payment, placeholder=form.payment.label.text, class="col-sm-5") }}
           <div class="container">
             <button class="btn btn-md btn-primary" type="submit">Confirm</button>
             <a href="{{url_for('invoices.customers')}}"><button class="btn btn-md btn-danger" type="button">Cancel</button></a>

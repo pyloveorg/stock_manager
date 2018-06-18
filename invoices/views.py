@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, flash
-from datetime import datetime
+import datetime
 
 from invoices.models import Products, Customers, Invoices, Basket, Quantities, Suppliers, Orders
 from database import db
@@ -7,6 +7,7 @@ from flask_weasyprint import HTML, render_pdf, CSS
 from flask_mail import Message
 from invoices.forms import CustomerForm, SupplierForm
 from flask_login import login_required
+from mail_config import mail
 
 baseTemplate = 'index.html'
 
@@ -27,7 +28,7 @@ def customer_select():
                 if request.form.get('customer_id'):
                     id = int(request.form.get('customer_id'))
                     if Customers.query.get(id):
-                        return redirect(url_for('invioices.products_select', id=id))
+                        return redirect(url_for('invoices.products_select', id=id))
                     else:
                         flash('No such customer in db, try again', 'danger')
                         return render_template('invoicing.html', customers=customers)
@@ -39,10 +40,10 @@ def customer_select():
                     except AttributeError:
                         flash('There is no such customer in db', 'danger')
                         return render_template('invoicing.html', customers=customers)
-                    return redirect(url_for('invioices.products_select', id=id))
+                    return redirect(url_for('invoices.products_select', id=id))
                 elif request.method == 'POST' and request.form.get('customer_id_list'):
                     id = int(request.form.get('customer_id_list'))
-                    return redirect(url_for('invioices.products_select', id=id))
+                    return redirect(url_for('invoices.products_select', id=id))
                 else:
                     flash('No such customer in db, try again', 'danger')
                     return render_template('invoicing.html', customers=customers)
@@ -189,7 +190,10 @@ def products_select(id):
                     new_order.sum = order_sum
                     db.session.commit()
             flash('Invoice added', 'success')
-            return redirect(url_for('selected_invoice', inv_id=inv_id))
+            return redirect(url_for('invoices.selected_invoice', inv_id=inv_id))
+
+    return render_template('invoicing.html', products=products, selected_customer=selected_customer)
+
 # Invoices Archive
 
 #All invoices
@@ -419,10 +423,12 @@ def edit_customer(customer_id):
         form.name.data = customer.name
         form.nip.data = customer.nip
         form.address.data = customer.address
+        form.payment.data = customer.payment
     elif form.validate_on_submit():
         customer.name = form.name.data
         customer.nip = form.nip.data
         customer.address = form.address.data
+        customer.payment = form.payment.data
         db.session.commit()
         flash('Customer successfully updated', 'success')
         return redirect(url_for('invoices.customers'))
@@ -465,6 +471,7 @@ def add_customer():
         customer.name = form.name.data
         customer.address = form.address.data
         customer.nip = form.nip.data
+        customer.payment = form.payment.data
         db.session.add(customer)
         db.session.commit()
         flash('Customer added successfully', 'success')

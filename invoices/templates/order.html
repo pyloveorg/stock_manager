@@ -1,173 +1,166 @@
 {% extends 'index.html' %}
 {% set page_id = 'order' %}
-{% block body %}
+{% block content %}
 <!-- nav breadcrumb -->
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{url_for('invoices.to_order')}}">To order</a></li>
-    <li class="breadcrumb-item"><a href="{{url_for('invoices.orders_archive')}}">Ordered</a></li>
-    <li class="breadcrumb-item"><a href="{{url_for('invoices.orders_by_supplier')}}">By supplier</a></li>
-  </ol>
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="{{url_for('invoices.to_order')}}">To order</a></li>
+		<li class="breadcrumb-item"><a href="{{url_for('invoices.orders_archive')}}">Ordered</a></li>
+		<li class="breadcrumb-item"><a href="{{url_for('invoices.orders_by_supplier')}}">By supplier</a></li>
+	</ol>
 </nav>
-
 {% if order.sent == False %}
 <!-- Card with basic order (which wasn't send) info -->
 <div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-md-auto">
-      <div class="card text-center border-danger mb-3">
-        <div class="card-header">
-          Order no {{order.orders_id}} from {{order.date.date()}}
-        </div>
-          <div class="card-body text-danger">
-            <h5 class="card-title">Supplier: {{order.supplier.name}} (ID:{{order.supplier.suppliers_id}})</h5>
-            <p class="card-text">Products at order:<br>
-            {%for item in order.ordering %}
-                {{item.name}} ID: {{item.products_id}} <br>
-            {% endfor %}
-            </p>
-              <!-- Buttons to show or send order  -->
-
-            <div class="row justify-content-md-center">
-            <div class="col-sm-auto">
-            <form method="POST">
-              <input type="hidden" name="send" value="{{order.orders_id}}" />
-            <button type="submit" class="btn btn-outline-danger">Send</button>
-            </form>
-            </div>
-              <div class="col-sm-auto">
-             <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalLong">
-                      Show Order
-            </button>
-            </div>
-          </div>
-
-          <div class="card-footer text-muted">
-            You are running out of this parts
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
+	<div class="row justify-content-md-center">
+		<div class="col-md-auto">
+			<div class="card text-center border-danger mb-3">
+				<div class="card-header">
+				Order no {{order.orders_id}} from {{order.date.date()}}
+				</div>
+				<div class="card-body text-danger">
+					<h5 class="card-title">Supplier: {{order.supplier.name}} (ID:{{order.supplier.suppliers_id}})</h5>
+					<p class="card-text">Products at order:<br>
+					{%for item in order.ordering %}
+					{{item.name}} ID: {{item.products_id}} <br>
+					{% endfor %}
+					</p>
+				<!-- Buttons to show or send order  -->
+					<div class="row justify-content-md-center">
+						<div class="col-sm-auto">
+							<form method="POST">
+							<input type="hidden" name="send" value="{{order.orders_id}}" />
+							<button type="submit" class="btn btn-outline-danger">Send</button>
+							</form>
+						</div>
+						<div class="col-sm-auto">
+							<button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalLong">
+							Show Order
+							</button>
+						</div>
+					</div>
+					<div class="card-footer text-muted">
+					You are running out of this parts
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 {% endif %}
 
 {% if order.sent == True %}
 <!-- Card with basic sent order info -->
 <div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col-md-auto">
-      <div class="card text-center border-primary mb-3">
-        <div class="card-header">
-          Order no {{order.orders_id}} from {{order.date.date()}}
-        </div>
-          <div class="card-body">
-            <h5 class="card-title">Supplier: {{order.supplier.name}} (ID:{{order.supplier.suppliers_id}})</h5>
-            <p class="card-text">Products at order:<br>
-            {%for item in order.ordering %}
-                {{item.name}} ID: {{item.products_id}} <br>
-            {% endfor %}
-            </p>
-              <!-- Button  -->
-             <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalLong">
-                      Show Order
-            </button>
-          </div>
-          <div class="card-footer text-muted">
-            This order was sent to supplier
-          </div>
-      </div>
-    </div>
-  </div>
+	<div class="row justify-content-md-center">
+		<div class="col-md-auto">
+			<div class="card text-center border-primary mb-3">
+				<div class="card-header">
+				Order no {{order.orders_id}} from {{order.date.date()}}
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">Supplier: {{order.supplier.name}} (ID:{{order.supplier.suppliers_id}})</h5>
+					<p class="card-text">Products at order:<br>
+					{%for item in order.ordering %}
+					{{item.name}} ID: {{item.products_id}} <br>
+					{% endfor %}
+					</p>
+					<!-- Button  -->
+					<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalLong">
+					Show Order
+					</button>
+				</div>
+				<div class="card-footer text-muted">
+				This order was sent to supplier
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 {% endif %}
 <!-- Modal -->
 
 <div class="modal fade bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Order</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-4">Stock Manager Sp. z o.o.<br>gen. Tadeusza Kutrzeby 10<br>61-719 Poznań<br>NIP: 123-456-00-00</div>
-      <div class="col-md-4 ml-auto">Poznań, {{order.date.date()}}</div>
-    </div>
-      <div class="row">
-          <div class="col">
-              <br> <!--Pusty wiersz -->
-          </div>
-      </div>
-    <div class="row">
-      <div class="col-md-3 ml-auto"><b>Order</b><br>{{order.orders_id}}/{{order.date.year}}</div>
-      <div class="col-md-3 ml-auto">{{order.supplier.name}}<br>{{order.supplier.adress}}<br>{{order.supplier.nip}}<br>ID: {{order.supplier.suppliers_id}}</div>
-    </div>
-      <div class="row">
-          <div class="col">
-              <br> <!--Pusty wiersz -->
-          </div>
-      </div>
-    <div class="row">
-      <div class="col-md-6 ml-auto">Payment day: ???<br>Account no ????</div>
-    </div>
-      <div class="row">
-          <div class="col">
-              <br> <!--Pusty wiersz -->
-          </div>
-      </div>
-
-      <!--Table with items in modal -->
-    <div class="row">
-      <div class="col-sm-12">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Description</th>
-              <th scope="col">Unit Cost</th>
-              <th scope="col">Qty</th>
-              <th scope="col">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-          {% for item in order.quantities %}
-            <tr>
-              <td>{{item.product.name}} / Product code: {{item.product.products_id}}</td>
-              <td>{{item.product.price}}</td>
-              <td>{{item.order_quantity}}</td>
-              <td>{{item.total_price}}</td>
-            </tr>
-          {% endfor %}
-            <tr>
-              <th class="text-right" scope="row" colspan="3">Subtotal</th>
-              <td>{{order.net}} PLN</td>
-            </tr>
-            <tr>
-              <th class="text-right" scope="row" colspan="3">Discount</th>
-              <td>{{order.supplier.discount}}</td>
-            </tr>
-            <tr>
-              <th class="text-right" scope="row" colspan="3">Total</th>
-                <td><u>{{order.sum}} PLN</u></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <form method="POST">
-        <input type="submit" class="btn btn-primary" name="Print" value="Print">
-        </form>
-      </div>
-    </div>
-  </div>
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Order</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-4">Stock Manager Sp. z o.o.<br>gen. Tadeusza Kutrzeby 10<br>61-719 Poznań<br>NIP: 123-456-00-00</div>
+						<div class="col-md-4 ml-auto">Poznań, {{order.date.date()}}</div>
+					</div>
+					<div class="row">
+						<div class="col">
+						<br> <!--Pusty wiersz -->
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 ml-auto"><b>Order</b><br>{{order.orders_id}}/{{order.date.year}}</div>
+						<div class="col-md-3 ml-auto">{{order.supplier.name}}<br>{{order.supplier.adress}}<br>{{order.supplier.nip}}<br>ID: {{order.supplier.suppliers_id}}</div>
+					</div>
+					<div class="row">
+						<div class="col">
+						<br> <!--Pusty wiersz -->
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+						<br> <!--Pusty wiersz -->
+						</div>
+					</div>
+					<!--Table with items in modal -->
+					<div class="row">
+						<div class="col-sm-12">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Description</th>
+										<th scope="col">Unit Cost</th>
+										<th scope="col">Qty</th>
+										<th scope="col">Amount</th>
+									</tr>
+								</thead>
+								<tbody>
+								{% for item in order.quantities %}
+									<tr>
+										<td>{{item.product.name}} / Product code: {{item.product.products_id}}</td>
+										<td>{{item.product.price}}</td>
+										<td>{{item.order_quantity}}</td>
+										<td>{{item.total_price}}</td>
+									</tr>
+								{% endfor %}
+									<tr>
+										<th class="text-right" scope="row" colspan="3">Subtotal</th>
+										<td>{{order.net}} PLN</td>
+									</tr>
+									<tr>
+										<th class="text-right" scope="row" colspan="3">Discount</th>
+										<td>{{order.supplier.discount}}</td>
+									</tr>
+									<tr>
+										<th class="text-right" scope="row" colspan="3">Total</th>
+										<td><u>{{order.sum}} PLN</u></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<form method="POST">
+					<input type="submit" class="btn btn-primary" name="Print" value="Print">
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 
 {% endblock %}
