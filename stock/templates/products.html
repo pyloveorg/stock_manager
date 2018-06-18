@@ -3,9 +3,8 @@
 {% block title %}Products{%endblock%}
 
 {% block content %}
-<div id="stock" class=""container-fluid"">
+<div id="stock" class="container-fluid">
     <div class="header">
-        Maybe something useful will come to mind.
 
     </div>
     <div class="row">
@@ -63,11 +62,14 @@
 
         </div>
         <div class="col-sm-2">
-            <form action="/search" method="post">
+            <form action="/search" method="get">
                 <div class="row">
                     <div class="col-md-auto">
                         <input type="text" class="form-control" placeholder="Search" name="query">
                         <small id="searchHelp" class="form-text text-muted"></small>
+                        <label class="radio-inline"><input type="radio" name="curr" value="pln" checked="checked">PLN</label>
+                        <label class="radio-inline"><input type="radio" name="curr" value="eur">EUR</label>
+                        <label class="radio-inline"><input type="radio" name="curr" value="gbp">GBP</label>
                             <div class="row_button">
                                 <input class="btn btn-primary" type="submit" value="Submit">
                             </div>
@@ -85,11 +87,18 @@
 </div>
 
 <script>
+var rate = {{ currency_rate }};
+
+
+
+function send() {
+document.getElementById('currency').submit();
+}
 
 
 var stock = {{ searched_products|tojson }};
 var columnThead = {{ products_columns|tojson }}
-document.getElementById('stock_table').innerHTML = newTable(stock, columnThead);
+document.getElementById('stock_table').innerHTML = newTable(stock, columnThead, rate);
 document.getElementById('searchHelp').innerHTML = "Products found: " + searchLen(stock);
 
 function searchLen(list) {
@@ -97,7 +106,7 @@ function searchLen(list) {
     return listLen;
 }
 
-function newTable(list1, list2) {
+function newTable(list1, list2, rate) {
     var tableCreate = '<table>';
     tableCreate += '<tr>';
     tableCreate += '<thead>';
@@ -108,8 +117,12 @@ function newTable(list1, list2) {
     tableCreate += '</thead>';
     for (var x in list1.Products){
         tableCreate += '<tr>';
-        for (var y in list1.Products[x].columns){
-            tableCreate += '<td>' + list1.Products[x].columns[y] + '</td>';
+        for (var y in list1.Products[x].columns) {
+            if (y == 4) {
+                tableCreate += '<td>' + (list1.Products[x].columns[y]/Number(rate)).toFixed(2) + '</td>';
+            } else {
+                tableCreate += '<td>' + list1.Products[x].columns[y] + '</td>';
+            }
         }
         tableCreate += '</tr>';
 

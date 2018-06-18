@@ -4,6 +4,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from invoices.models import Products, Suppliers
 from stock.search_engine import search_engine
 from stock.add_product import new_stock
+from stock.currency_rate import currency
 
 productsTemplate = 'products.html'
 stock_blueprint = Blueprint("stock", __name__, template_folder='templates')
@@ -20,9 +21,30 @@ def columns_tr(model):
 @login_required
 def search():
     products_columns = columns_tr(Products)
-    if request.method == "POST":
-        searched_products = search_engine(query=request.form.get('query'))
-        return render_template(productsTemplate, searched_products=searched_products, products_columns=products_columns)
+    if True:
+        cur = request.args.get("curr")
+        searched_products = search_engine(query=request.args.get('query'))
+        return render_template(productsTemplate,
+                               searched_products=searched_products,
+                               products_columns=products_columns,
+                               currency_rate=currency_rate,
+                               )
+
+
+# @stock_blueprint.route("/currency", methods=['GET', 'POST'])
+# @login_required
+# def currency_change():
+#     curr = request.args.get("currency")
+#     currency_rate = currency(cur="GBP")
+#     products_columns = columns_tr(Products)
+#     searched_products = search_engine(query=None)
+#     suppliers = Suppliers.query.order_by(Suppliers.suppliers_id)
+#     return render_template(productsTemplate,
+#                            searched_products=searched_products,
+#                            products_columns=products_columns,
+#                            suppliers=suppliers,
+#                            currency_rate=currency_rate
+#                            )
 
 
 @stock_blueprint.route('/stock', methods=['GET', 'POST'])
@@ -31,11 +53,11 @@ def stock_view():
     products_columns = columns_tr(Products)
     searched_products = search_engine(query=None)
     suppliers = Suppliers.query.order_by(Suppliers.suppliers_id)
-
     return render_template(productsTemplate,
                            searched_products=searched_products,
                            products_columns=products_columns,
-                           suppliers=suppliers
+                           suppliers=suppliers,
+                           currency_rate=1
                            )
 
 
