@@ -70,6 +70,7 @@
                         <label class="radio-inline"><input type="radio" name="curr" value="pln" checked="checked">PLN</label>
                         <label class="radio-inline"><input type="radio" name="curr" value="eur">EUR</label>
                         <label class="radio-inline"><input type="radio" name="curr" value="gbp">GBP</label>
+                        <p>Currency: {{ cur_curr }}</p>
                             <div class="row_button">
                                 <input class="btn btn-primary" type="submit" value="Submit">
                             </div>
@@ -88,7 +89,6 @@
 
 <script>
 var rate = {{ currency_rate }};
-
 
 
 function send() {

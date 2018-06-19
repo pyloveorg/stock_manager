@@ -22,21 +22,21 @@ def columns_tr(model):
 def search():
     products_columns = columns_tr(Products)
     if True:
-        cur = request.args.get("curr")
+        cur_curr = request.args.get("curr")
         searched_products = search_engine(query=request.args.get('query'))
-        currency_rate = currency(cur=cur)
+        currency_rate = currency(cur=cur_curr)
         return render_template(productsTemplate,
                                searched_products=searched_products,
                                products_columns=products_columns,
                                currency_rate=currency_rate,
+                               cur_curr=cur_curr.upper()
                                )
-
-
 
 
 @stock_blueprint.route('/stock', methods=['GET', 'POST'])
 @login_required
 def stock_view():
+    cur_curr = "PLN"
     products_columns = columns_tr(Products)
     searched_products = search_engine(query=None)
     suppliers = Suppliers.query.order_by(Suppliers.suppliers_id)
@@ -44,7 +44,8 @@ def stock_view():
                            searched_products=searched_products,
                            products_columns=products_columns,
                            suppliers=suppliers,
-                           currency_rate=1
+                           currency_rate=1,
+                           cur_curr=cur_curr
                            )
 
 
