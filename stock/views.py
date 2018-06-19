@@ -32,20 +32,6 @@ def search():
                                )
 
 
-# @stock_blueprint.route("/currency", methods=['GET', 'POST'])
-# @login_required
-# def currency_change():
-#     curr = request.args.get("currency")
-#     currency_rate = currency(cur="GBP")
-#     products_columns = columns_tr(Products)
-#     searched_products = search_engine(query=None)
-#     suppliers = Suppliers.query.order_by(Suppliers.suppliers_id)
-#     return render_template(productsTemplate,
-#                            searched_products=searched_products,
-#                            products_columns=products_columns,
-#                            suppliers=suppliers,
-#                            currency_rate=currency_rate
-#                            )
 
 
 @stock_blueprint.route('/stock', methods=['GET', 'POST'])
